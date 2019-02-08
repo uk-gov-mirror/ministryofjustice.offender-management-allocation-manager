@@ -24,4 +24,9 @@ Rails.application.routes.draw do
       as: 'allocate_new')
   post('/allocate/create/:nomis_offender_id/:nomis_staff_id' => 'allocate#create',
       as: 'allocate_create')
+
+  get('/allocation-override/:nomis_offender_id/:nomis_staff_id' => 'allocation_overrides#new', as: 'allocation_overrides_new')
+  # post('/allocation-override' => 'allocate_overrides#create', as: 'allocate_overrides_create')
+  #
+  resource :allocation_overrides,  only: %i[create ]
 end

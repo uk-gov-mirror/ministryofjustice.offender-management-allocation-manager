@@ -10,10 +10,24 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_02_07_143221) do
+ActiveRecord::Schema.define(version: 2019_02_08_131022) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "allocation_overrides", force: :cascade do |t|
+    t.string "nomis_staff_id"
+    t.integer "nomis_offender_id"
+    t.string "override_reason"
+    t.string "more_detail"
+  end
+
+  create_table "allocation_overrides_tables", force: :cascade do |t|
+    t.string "nomis_staff_id"
+    t.integer "nomis_offender_id"
+    t.string "override_reason"
+    t.string "more_detail"
+  end
 
   create_table "allocations", force: :cascade do |t|
     t.string "nomis_offender_id"
