@@ -1,6 +1,6 @@
 namespace :delius do
-  desc "Generates seed data for delius from T3"
-  task :generate_data => :environment do
+  desc 'Generates seed data for delius from T3'
+  task generate_data: :environment do
     response = Nomis::Elite2::Api.get_offender_list('LEI', page_size: 1)
     total_elements = response.meta.total_elements
 
@@ -9,8 +9,7 @@ namespace :delius do
       id_val = 100 + idx
       statement = <<~HEREDOC
 
-        INSERT INTO
-        OFFENDER(
+        INSERT INTO OFFENDER(
           FIRST_NAME, OFFENDER_ID, CRN, NOMS_NUMBER,
           SECOND_NAME, SURNAME, DATE_OF_BIRTH_DATE,
           PARTITION_AREA_ID, SOFT_DELETED, ROW_VERSION, GENDER_ID,
@@ -18,10 +17,9 @@ namespace :delius do
           CURRENT_EXCLUSION, CREATED_BY_USER_ID, LAST_UPDATED_USER_ID,
           FIRST_NAME_SOUNDEX, LAST_UPDATED_USER_ID_DIVERSITY, CURRENT_DISPOSAL,
           CURRENT_RESTRICTION, PENDING_TRANSFER, CURRENT_TIER
-        )
-        VALUES(
-          '#{offender.first_name}', #{id_val}, 'CRN#{id_val}', '#{offender.offender_no}',
-          '#{offender.middle_name}', '#{offender.last_name}', '#{offender.date_of_birth}',
+        ) VALUES(
+          '#{offender.first_name.sub("'", "\''")}', #{id_val}, 'CRN#{id_val}', '#{offender.offender_no}',
+          '#{offender.middle_name}', '#{offender.last_name.sub("'", "\''")}', '#{offender.date_of_birth}',
           1, 0, 1, 1,
           'SURNAME_SOUNDEX', '2018-01-01', '2018-01-01',
           0, 1, 1,
@@ -36,5 +34,5 @@ namespace :delius do
 end
 
 def random_tier
-  1
+  (4096..4102).to_a.sample
 end
