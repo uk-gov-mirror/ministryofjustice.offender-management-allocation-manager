@@ -11,6 +11,11 @@ describe SearchService do
     expect(offenders.count).to eq(6)
   end
 
+  it "will return a filtered list if there is a search anywhere in the name", vcr: { cassette_name: :search_service_filtered_includes } do
+    offenders = described_class.search_for_offenders('ali', 'LEI')
+    expect(offenders.count).to eq(16)
+  end
+
   it "will handle a nil search term", vcr: { cassette_name: :search_service_no_term } do
     offenders = described_class.search_for_offenders(nil, 'LEI')
     expect(offenders.count).to eq(0)
