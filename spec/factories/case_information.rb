@@ -10,6 +10,10 @@ FactoryBot.define do
       'Yes'
     end
 
+    probation_service do
+      'England'
+    end
+
     case_allocation do
       'NPS'
     end

@@ -26,6 +26,13 @@ class CaseInformation < ApplicationRecord
     allow_nil: false,
     message: 'Select yes if the prisoner’s last known address was in Wales'
   }
+
+  validates :probation_service, inclusion: {
+  in: ['Scotland', 'Northern Ireland', 'Wales', 'England'],
+  allow_nil: false,
+  message: "You must say if the prisoner's last known address was in Northern Ireland, Scotland or Wales"
+  }
+
   validates :tier, inclusion: { in: %w[A B C D], message: 'Select the prisoner’s tier' }
 
   validates :case_allocation, inclusion: {
