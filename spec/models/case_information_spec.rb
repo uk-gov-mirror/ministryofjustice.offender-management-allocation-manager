@@ -80,6 +80,17 @@ RSpec.describe CaseInformation, type: :model do
     end
   end
 
+  context 'with last_known_address' do
+    subject {
+      build(:case_information, last_known_address: nil)
+    }
+
+    it 'gives the correct message' do
+      expect(subject).not_to be_valid
+      expect(subject.errors.messages).to eq(last_known_address: ["Select yes if the prisoner's last known address was in Northern Ireland, Scotland or Wales"])
+    end
+  end
+
   context 'with probation service' do
     subject {
       build(:case_information, probation_service: nil)

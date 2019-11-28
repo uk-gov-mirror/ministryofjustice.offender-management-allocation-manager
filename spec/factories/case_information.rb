@@ -10,6 +10,10 @@ FactoryBot.define do
       'Yes'
     end
 
+    last_known_address do
+      'No'
+    end
+
     probation_service do
       'England'
     end
