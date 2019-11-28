@@ -3,6 +3,8 @@
 class CaseInformation < ApplicationRecord
   self.table_name = 'case_information'
 
+  attr_accessor :last_known_address
+
   belongs_to :local_divisional_unit, optional: true
   belongs_to :team, optional: true
   has_many :early_allocations,
@@ -15,6 +17,12 @@ class CaseInformation < ApplicationRecord
   def latest_early_allocation
     early_allocations.last
   end
+
+  validates :last_known_address, inclusion: {
+    in: %w[Yes No],
+    allow_nil: false,
+    message: "Select yes if the prisoner's last known address was in Northern Ireland, Scotland or Wales"
+  }
 
   validates :manual_entry, inclusion: { in: [true, false], allow_nil: false }
   validates :nomis_offender_id, presence: true, uniqueness: true
@@ -33,7 +41,7 @@ class CaseInformation < ApplicationRecord
   message: "You must say if the prisoner's last known address was in Northern Ireland, Scotland or Wales"
   }
 
-  validates :tier, inclusion: { in: %w[A B C D], message: 'Select the prisoner’s tier' }
+  validates :tier, inclusion: { in: %w[A B C D N/A], message: 'Select the prisoner’s tier' }
 
   validates :case_allocation, inclusion: {
     in: %w[NPS CRC],
