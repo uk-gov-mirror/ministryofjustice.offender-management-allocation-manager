@@ -8,6 +8,7 @@ class CaseInformationController < PrisonsApplicationController
     @case_info = CaseInformation.new(
       nomis_offender_id: nomis_offender_id_from_url
     )
+    # params[:form_page] = 'address'
   end
 
   def edit; end
@@ -46,18 +47,19 @@ class CaseInformationController < PrisonsApplicationController
       welsh_offender: case_information_params[:welsh_offender],
       case_allocation: case_information_params[:case_allocation],
       probation_service: case_information_params[:probation_service],
+      last_known_address: case_information_params[:last_known_address],
       manual_entry: true
     )
 
-    if @case_info.valid?
-      return redirect_to prison_summary_pending_path(active_prison_id,
-                                                     sort: params[:sort],
-                                                     page: params[:page]
-                         )
-    end
+    scotland_or_ni_address
+    other_address
 
-    @prisoner = prisoner(case_information_params[:nomis_offender_id])
-    render :new
+    if @case_info.valid?
+      @case_info.save
+      return redirect_to prison_summary_pending_path(active_prison_id, sort: params[:sort], page: params[:page])
+    else
+      case_info_errors
+    end
   end
 
   def update
@@ -95,7 +97,59 @@ private
 
   def case_information_params
     params.require(:case_information).
-      permit(:nomis_offender_id, :tier, :case_allocation, :welsh_offender, :probation_service,
-             :parole_review_date_dd, :parole_review_date_mm, :parole_review_date_yyyy)
+      permit(:nomis_offender_id, :tier, :case_allocation, :welsh_offender,
+             :last_known_address, :probation_service, :parole_review_date_dd,
+             :parole_review_date_mm, :parole_review_date_yyyy)
+  end
+
+  def scotland_or_ni_address
+    return unless ['Scotland', 'Northern Ireland'].include?(case_information_params[:probation_service])
+
+    @case_info.tier = 'N/A'
+    @case_info.welsh_offender = 'No'
+    @case_info.case_allocation = 'N/A'
+  end
+
+  def other_address
+    if case_information_params[:last_known_address] == 'No'
+      @case_info.probation_service = 'England'
+      @case_info.welsh_offender = 'No'
+    elsif case_information_params[:probation_service] == 'Wales'
+      @case_info.welsh_offender = 'Yes'
+    end
+  end
+
+  def case_info_errors
+    if case_information_params[:last_known_address].nil?
+      @case_info.errors.messages.reject! do |f, _m|
+        f != :probation_service && f != :last_known_address
+      end
+      display_address_page
+    elsif case_information_params[:last_known_address] == 'Yes' && case_information_params[:probation_service].nil?
+      @case_info.errors.messages.select! do |f, _m|
+        f == :probation_service
+      end
+      display_address_page
+    else
+      clear_errors
+      display_missing_info_page
+    end
+  end
+
+  def display_address_page
+    @prisoner = prisoner(case_information_params[:nomis_offender_id])
+    render :new
+  end
+
+  def display_missing_info_page
+    @prisoner = prisoner(case_information_params[:nomis_offender_id])
+    @case_info.probation_service = 'England' if @case_info.last_known_address == 'No'
+    render :missing_info
+  end
+
+  def clear_errors
+    return unless params[:form_page] == 'address'
+
+    @case_info.errors.clear
   end
 end

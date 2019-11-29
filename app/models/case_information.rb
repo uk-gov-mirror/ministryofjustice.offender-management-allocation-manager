@@ -26,7 +26,6 @@ class CaseInformation < ApplicationRecord
 
   validates :manual_entry, inclusion: { in: [true, false], allow_nil: false }
   validates :nomis_offender_id, presence: true, uniqueness: true
-
   validates :local_divisional_unit, :team, presence: true, unless: ->{ manual_entry }
 
   validates :welsh_offender, inclusion: {
@@ -36,15 +35,15 @@ class CaseInformation < ApplicationRecord
   }
 
   validates :probation_service, inclusion: {
-  in: ['Scotland', 'Northern Ireland', 'Wales', 'England'],
-  allow_nil: false,
-  message: "You must say if the prisoner's last known address was in Northern Ireland, Scotland or Wales"
+    in: ['Scotland', 'Northern Ireland', 'Wales', 'England'],
+    allow_nil: false,
+    message: "You must say if the prisoner's last known address was in Northern Ireland, Scotland or Wales"
   }
 
   validates :tier, inclusion: { in: %w[A B C D N/A], message: 'Select the prisoner’s tier' }
 
   validates :case_allocation, inclusion: {
-    in: %w[NPS CRC],
+    in: %w[NPS CRC N/A],
     allow_nil: false,
     message: 'Select the service provider for this case'
   }

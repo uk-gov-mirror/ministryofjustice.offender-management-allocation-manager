@@ -2,9 +2,7 @@
   <%= form.hidden_field(:nomis_offender_id, value: @prisoner.offender_no) %>
   <%= hidden_field_tag("sort", params[:sort])%>
   <%= hidden_field_tag("page", params[:page]) %>
-  <% if @case_info.errors.count > 0 %>
-    <%= render :partial => "/shared/field_errors", :locals => { form: form, errors: @case_info.errors } %>
-  <% end %>
+  <%= hidden_field_tag("form_page", 'address') %>
 
   <div class="govuk-form-group">
     <fieldset class="govuk-fieldset">
@@ -14,11 +12,11 @@
 
       <div class="govuk-radios govuk-radios--conditional" data-module="govuk-radios">
         <div class="govuk-radios__item">
-          <%= form.radio_button(:last_known_address, 'Yes', class: "govuk-radios__input", id:'address-conditional', data: { aria_controls: "conditional-address-conditional", aria_expanded: "true"} ) %>
+          <%= form.radio_button(:last_known_address, 'Yes', class: "govuk-radios__input", id:'last_known_address_yes', data: { aria_controls: "conditional-last_known_address_yes", aria_expanded: "true"} ) %>
           <%= form.label :last_known_address, 'Yes', class: "govuk-label govuk-radios__label" %>
         </div>
 
-        <div class="govuk-radios__conditional" id="conditional-address-conditional">
+        <div class="govuk-radios__conditional" id="conditional-last_known_address_yes">
           <div class="govuk-form-group">
             <label class="govuk-label" for="yes">
               Which country did they live in?
@@ -51,3 +49,5 @@
 
   <%= form.submit "Continue", role: "button", draggable: "false", class: "govuk-button" %>
 <% end %>
+
+<%= debug(params) %>
