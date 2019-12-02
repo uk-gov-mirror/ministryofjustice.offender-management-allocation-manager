@@ -46,12 +46,6 @@
     </tr>
   <% end %>
     <tr class="govuk-table__row">
-      <td class="govuk-table__cell govuk-!-width-one-half">Last known address in Wales</td>
-      <td class="govuk-table__cell table_cell__left_align  govuk-!-width-one-half">
-        <%= humanized_bool(@prisoner.welsh_offender) %>
-      </td>
-    </tr>
-    <tr class="govuk-table__row">
       <td class="govuk-table__cell govuk-!-width-one-half">Service provider</td>
       <td class="govuk-table__cell table_cell__left_align  govuk-!-width-one-half">
         <%= service_provider_label(@prisoner.case_allocation) %>
