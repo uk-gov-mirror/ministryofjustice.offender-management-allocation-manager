@@ -14,7 +14,7 @@ module Nomis
     attr_accessor :crn,
                   :allocated_pom_name, :case_allocation,
                   :welsh_offender, :tier, :parole_review_date,
-                  :sentence, :mappa_level,
+                  :sentence, :mappa_level, :probation_service,
                   :ldu, :team
 
     def convicted?
@@ -80,6 +80,14 @@ module Nomis
       sentence_type_code == 'DET'
     end
 
+    def scottish?
+      probation_service == 'Scotland'
+    end
+
+    def northern_irish?
+      probation_service == 'Northern Ireland'
+    end
+
     def earliest_release_date
       sentence.earliest_release_date
     end
@@ -138,6 +146,7 @@ module Nomis
       @tier = record.tier
       @case_allocation = record.case_allocation
       @welsh_offender = record.welsh_offender == 'Yes'
+      @probation_service = record.probation_service
       @crn = record.crn
       @mappa_level = record.mappa_level
       @ldu = record.local_divisional_unit

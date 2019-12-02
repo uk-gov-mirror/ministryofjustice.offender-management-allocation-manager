@@ -16,6 +16,34 @@ describe ResponsibilityService do
       end
     end
 
+    context 'when the offender is an Northern Irish case' do
+      let(:offender) {
+        OpenStruct.new northern_irish?: true,
+                       determinate_sentence?: true,
+                       recalled?: false
+      }
+
+      it 'is responsible' do
+        resp = described_class.calculate_pom_responsibility(offender)
+
+        expect(resp).to eq ResponsibilityService::SUPPORTING
+      end
+    end
+
+    context 'when the offender is an Northern Irish case' do
+      let(:offender) {
+        OpenStruct.new scottish?: true,
+                       determinate_sentence?: true,
+                       recalled?: false
+      }
+
+      it 'is responsible' do
+        resp = described_class.calculate_pom_responsibility(offender)
+
+        expect(resp).to eq ResponsibilityService::SUPPORTING
+      end
+    end
+
     context 'when indeterminate with dates in the past' do
       let(:offender) {
         OpenStruct.new indeterminate_sentence?: true,

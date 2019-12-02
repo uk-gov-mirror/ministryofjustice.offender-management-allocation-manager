@@ -15,7 +15,7 @@ class ResponsibilityService
   WELSH_POLICY_START_DATE = DateTime.new(2019, 2, 4).utc.to_date
   ENGLISH_POLICY_START_DATE = DateTime.new(2019, 10, 1).utc.to_date
   def self.calculate_pom_responsibility(offender)
-    if offender.immigration_case?
+    if offender.immigration_case? || offender.scottish? || offender.northern_irish?
       SUPPORTING
     elsif open_prison_nps_offender?(offender)
       SUPPORTING
