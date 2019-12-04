@@ -26,7 +26,13 @@ class CaseInformation < ApplicationRecord
 
   validates :manual_entry, inclusion: { in: [true, false], allow_nil: false }
   validates :nomis_offender_id, presence: true, uniqueness: true
-  validates :local_divisional_unit, :team, presence: true, unless: ->{ manual_entry }
+
+  validates :local_divisional_unit,
+            presence: { message: "You must select the prisoner’s Local Divisional Unit (LDU)" },
+            unless:
+            proc { |c| c.probation_service == 'Scotland' || c.probation_service == 'Northern Ireland' || c.manual_entry == false }
+
+  validates :team, presence: true, unless: -> { manual_entry }
 
   validates :welsh_offender, inclusion: {
     in: %w[Yes No],
