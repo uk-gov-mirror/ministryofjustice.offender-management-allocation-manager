@@ -55,23 +55,29 @@ ldu3 = LocalDivisionalUnit.find_or_create_by!(
 # responsibility override workflow
 
 CaseInformation.find_or_create_by!(nomis_offender_id: 'G7658UL') do |info|
-    info.tier = 'A'
-    info.case_allocation = 'NPS'
-    info.welsh_offender = 'Yes'
-    info.manual_entry =  true
-    info.local_divisional_unit_id = ldu1.id
+  info.tier = 'A'
+  info.last_known_address = 'Yes'
+  info.probation_service = 'Wales'
+  info.case_allocation = 'NPS'
+  info.welsh_offender = 'Yes'
+  info.manual_entry =  true
+  info.local_divisional_unit_id = ldu1.id
 end
 
 CaseInformation.find_or_create_by!(nomis_offender_id: 'G7517GF') do |info|
   info.tier = 'B'
-    info.case_allocation = 'NPS'
-    info.welsh_offender = 'Yes'
-    info.manual_entry = true
-    info.local_divisional_unit_id = ldu1.id
+  info.last_known_address = 'Yes'
+  info.probation_service = 'Wales'
+  info.case_allocation = 'NPS'
+  info.welsh_offender = 'Yes'
+  info.manual_entry = true
+  info.local_divisional_unit_id = ldu1.id
 end
 
 CaseInformation.find_or_create_by!(nomis_offender_id: 'G3536UF') do |info|
   info.tier = 'A'
+  info.last_known_address = 'Yes'
+  info.probation_service = 'England'
   info.case_allocation = 'NPS'
   info.welsh_offender = 'No'
   info.manual_entry = true
@@ -80,6 +86,8 @@ end
 
 CaseInformation.find_or_create_by!(nomis_offender_id: 'G2260UO') do |info|
   info.tier = 'B'
+  info.last_known_address = 'Yes'
+  info.probation_service = 'England'
   info.case_allocation = 'NPS'
   info.welsh_offender = 'No'
   info.manual_entry = true
