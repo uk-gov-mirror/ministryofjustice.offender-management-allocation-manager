@@ -2,7 +2,6 @@ require 'rails_helper'
 
 feature 'case information feature' do
   context 'when the prisoner is Scottish or Northern Irish' do
-
     it 'complains if the user does not select any radio buttons', :raven_intercept_exception, vcr: { cassette_name: :case_information_missing_all_feature } do
       nomis_offender_id = 'G1821VA'
 
@@ -35,7 +34,7 @@ feature 'case information feature' do
       nomis_offender_id = 'G2911GD'
 
       signin_user
-      
+
       visit prison_summary_pending_path('LEI')
 
       expect(page).to have_content('Update information')
@@ -61,14 +60,16 @@ feature 'case information feature' do
       nomis_offender_id = 'G2911GD'
 
       signin_user
-      
+
       visit prison_summary_pending_path('LEI')
 
       expect(page).to have_content('Update information')
       within "#edit_#{nomis_offender_id}" do
         click_link 'Edit'
       end
+
       visit new_prison_case_information_path('LEI', nomis_offender_id)
+
       choose('last_known_address_yes')
       choose('case_information_probation_service_northern_ireland')
       click_button 'Continue'
@@ -81,8 +82,8 @@ feature 'case information feature' do
       expect(current_url).to have_content "/prisons/LEI/summary/pending"
 
       expect(page).to have_css('.offender_row_0', count: 1)
-      end
     end
+  end
 
   xit 'adds tiering and case information for a prisoner', :raven_intercept_exception, vcr: { cassette_name: :case_information_feature } do
     # This NOMIS id needs to appear on the first page of 'missing information'
@@ -139,7 +140,6 @@ feature 'case information feature' do
     expect(page).to have_content("Select the service provider for this case")
     expect(page).to have_content("Select yes if the prisoner’s last known address was in Wales")
   end
-
 
   xit 'complains if tier data is missing', :raven_intercept_exception, vcr: { cassette_name: :case_information_missing_tier_feature } do
     nomis_offender_id = 'G1821VA'

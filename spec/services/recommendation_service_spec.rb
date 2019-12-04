@@ -30,7 +30,7 @@ describe RecommendationService do
       o.sentence = Nomis::SentenceDetail.new
       o.inprisonment_status = 'SENT03'
       o.probation_service = 'Scotland'
-    } 
+    }
   }
 
   let(:northern_irish_case) {
@@ -39,7 +39,7 @@ describe RecommendationService do
       o.sentence = Nomis::SentenceDetail.new
       o.inprisonment_status = 'SENT03'
       o.probation_service = 'Northern Ireland'
-    } 
+    }
   }
 
   it "can determine the best type of POM for Tier A" do
