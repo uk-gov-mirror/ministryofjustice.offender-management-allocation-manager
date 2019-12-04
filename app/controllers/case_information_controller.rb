@@ -48,6 +48,7 @@ class CaseInformationController < PrisonsApplicationController
       case_allocation: case_information_params[:case_allocation],
       probation_service: case_information_params[:probation_service],
       last_known_address: case_information_params[:last_known_address],
+      local_divisional_unit_id: case_information_params[:local_divisional_unit_id],
       manual_entry: true
     )
 
@@ -99,7 +100,7 @@ private
     params.require(:case_information).
       permit(:nomis_offender_id, :tier, :case_allocation, :welsh_offender,
              :last_known_address, :probation_service, :parole_review_date_dd,
-             :parole_review_date_mm, :parole_review_date_yyyy)
+             :parole_review_date_mm, :parole_review_date_yyyy, :local_divisional_unit_id)
   end
 
   def scotland_or_ni_address
@@ -116,6 +117,10 @@ private
       @case_info.welsh_offender = 'No'
     elsif case_information_params[:probation_service] == 'Wales'
       @case_info.welsh_offender = 'Yes'
+    end
+
+    unless @case_info.local_divisional_unit_id.nil?
+      @case_info.local_divisional_unit_id = case_information_params[:local_divisional_unit_id]
     end
   end
 

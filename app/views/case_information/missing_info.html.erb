@@ -75,7 +75,7 @@
       <div id="search-field" class="govuk-form-group">
         <div class="govuk-grid-column-one-half">
           <div class="govuk-grid-row">
-            <%= text_field_tag('local_divisional_unit', nil, class: "govuk-input", id: "search") %>
+            <%= form.select(:local_divisional_unit_id, LocalDivisionalUnit.all.collect { |ldu| [ldu.name, ldu.id]}, {include_blank: true}, class: "govuk-select") %>
           </div>
           <div class="govuk-grid-row govuk-!-margin-top-6">
             <h2 class="govuk-heading-m">The following LDU has been selected:</h2>
@@ -113,4 +113,3 @@
   <%= form.submit "Continue", role: "button", draggable: "false", class: "govuk-button" %>
 <% end %>
 
-<%= debug(params) %>
