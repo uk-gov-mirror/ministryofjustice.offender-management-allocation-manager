@@ -8,7 +8,6 @@ class CaseInformationController < PrisonsApplicationController
     @case_info = CaseInformation.new(
       nomis_offender_id: nomis_offender_id_from_url
     )
-    # params[:form_page] = 'address'
   end
 
   def edit; end

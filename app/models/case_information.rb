@@ -18,17 +18,19 @@ class CaseInformation < ApplicationRecord
     early_allocations.last
   end
 
-  validates :last_known_address, inclusion: {
-    in: %w[Yes No],
-    allow_nil: false,
-    message: "Select yes if the prisoner's last known address was in Northern Ireland, Scotland or Wales"
-  }
-
   validates :manual_entry, inclusion: { in: [true, false], allow_nil: false }
+
+  validates :last_known_address,
+            inclusion: {
+              in: %w[Yes No],
+              allow_nil: false,
+              message: "Select yes if the prisoner's last known address was in Northern Ireland, Scotland or Wales"
+            }, if: -> { manual_entry }
+
   validates :nomis_offender_id, presence: true, uniqueness: true
 
   validates :local_divisional_unit,
-            presence: { message: 'You must select the prisoner’s Local Divisional Unit (LDU)' },
+            presence: { message: "You must select the prisoner's Local Divisional Unit (LDU)" },
             unless:
             proc { |c|
               c.probation_service == 'Scotland' ||
@@ -41,16 +43,16 @@ class CaseInformation < ApplicationRecord
   validates :welsh_offender, inclusion: {
     in: %w[Yes No],
     allow_nil: false,
-    message: 'Select yes if the prisoner’s last known address was in Wales'
+    message: "Select yes if the prisoner's last known address was in Wales"
   }
 
   validates :probation_service, inclusion: {
     in: ['Scotland', 'Northern Ireland', 'Wales', 'England'],
     allow_nil: false,
     message: "You must say if the prisoner's last known address was in Northern Ireland, Scotland or Wales"
-  }
+  }, if: -> { manual_entry }
 
-  validates :tier, inclusion: { in: %w[A B C D N/A], message: 'Select the prisoner’s tier' }
+  validates :tier, inclusion: { in: %w[A B C D N/A], message: "Select the prisoner's tier" }
 
   validates :case_allocation, inclusion: {
     in: %w[NPS CRC N/A],
