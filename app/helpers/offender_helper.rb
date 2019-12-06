@@ -18,6 +18,14 @@ module OffenderHelper
     end
   end
 
+  def probation_label(offender)
+    if offender.probation_service.nil?
+      'N/A'
+    else
+      offender.probation_service
+    end
+  end
+
   def last_event(allocation)
     event = event_type(allocation.event)
     event + ' - ' + allocation.updated_at.strftime('%d/%m/%Y')
