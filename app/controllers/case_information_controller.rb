@@ -10,7 +10,13 @@ class CaseInformationController < PrisonsApplicationController
     )
   end
 
-  def edit; end
+  def edit
+    if @case_info.probation_service == 'England'
+      @case_info.last_known_address = 'No'
+    else
+      @case_info.last_known_address = 'Yes'
+    end
+  end
 
   # Just edit the parole_review_date field
   def edit_prd
