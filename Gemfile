@@ -39,6 +39,7 @@ gem 'kaminari' # pagination
 gem 'prawn-rails'
 gem 'rswag-api' # api-documentation
 gem 'rswag-ui'  # api-documentation interface
+gem 'jquery-rails'
 
 group :development, :test do
   gem 'brakeman'

@@ -1,5 +1,5 @@
 
-<%= form_for(@case_info, url: prison_case_information_path(@prison.code), method: :put, id: "case_info_form") do |form| %>
+<%= form_for(@case_info, url: prison_case_information_path(@prison.code), method: :put, id: "case_info_form", remote: true) do |form| %>
   <%= form.hidden_field(:nomis_offender_id, value: @prisoner.offender_no) %>
   <%= hidden_field_tag("sort", params[:sort])%>
   <%= hidden_field_tag("page", params[:page]) %>
@@ -25,15 +25,15 @@
 
               <div class="govuk-radios">
                 <div class="govuk-radios__item">
-                  <%= form.radio_button(:probation_service, 'Scotland', checked: @case_info.probation_service == 'Scotland', class: "govuk-radios__input" ) %>
+                  <%= form.radio_button(:probation_service, 'Scotland', checked: @case_info.probation_service == 'Scotland', class: "govuk-radios__input", data: {behavior: "last-address"} ) %>
                   <%= form.label :probation_service, 'Scotland', class: "govuk-label govuk-radios__label" %>
                 </div>
                 <div class="govuk-radios__item">
-                  <%= form.radio_button(:probation_service, 'Northern Ireland', checked: @case_info.probation_service == 'Northern Ireland', class: "govuk-radios__input" ) %>
+                  <%= form.radio_button(:probation_service, 'Northern Ireland', checked: @case_info.probation_service == 'Northern Ireland', class: "govuk-radios__input", data: {behavior: "last-address"} ) %>
                   <%= form.label :probation_service, 'Northern Ireland', class: "govuk-label govuk-radios__label" %>
                 </div>
                 <div class="govuk-radios__item">
-                  <%= form.radio_button(:probation_service, 'Wales', checked: @case_info.probation_service == 'Wales', class: "govuk-radios__input" ) %>
+                  <%= form.radio_button(:probation_service, 'Wales', checked: @case_info.probation_service == 'Wales', class: "govuk-radios__input", data: {behavior: "last-address"} ) %>
                   <%= form.label :probation_service, 'Wales', class: "govuk-label govuk-radios__label" %>
                 </div>
               </div>
@@ -41,73 +41,71 @@
           </div>
 
           <div class="govuk-radios__item">
-            <%= form.radio_button(:last_known_address, 'No', checked: @case_info.last_known_address == 'No', class: "govuk-radios__input" ) %>
+            <%= form.radio_button(:last_known_address, 'No', checked: @case_info.last_known_address == 'No', class: "govuk-radios__input", data: {behavior: "last-address"} ) %>
             <%= form.label :last_known_address, 'No', class: "govuk-label govuk-radios__label" %>
           </div>
         </div>
       </div>
 
-      <div class="govuk-form-group">
-        <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
-          <h1 class="govuk-fieldset__heading">Select the service provider</h1>
-        </legend>
+      <div class="optional-case-info">
+        <div class="govuk-form-group">
+          <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+            <h1 class="govuk-fieldset__heading">Select the service provider</h1>
+          </legend>
 
-        <div class="govuk-radios" data-module="govuk-radios">
-          <div class="govuk-radios__item">
-            <%= form.radio_button(:case_allocation, 'NPS', checked: @case_info.case_allocation == 'NPS', class: "govuk-radios__input") %>
-            <%= form.label :case_allocation, 'National Probation Service (NPS)', class: "govuk-label govuk-radios__label" %>
-          </div>
-          <div class="govuk-radios__item">
-            <%= form.radio_button(:case_allocation, 'CRC', checked: @case_info.case_allocation == 'CRC', class: "govuk-radios__input") %>
-            <%= form.label :case_allocation, 'Community Rehabilitation Company (CRC)', class: "govuk-label govuk-radios__label" %>
-          </div>
-        </div>
-      </div>
-
-      <div class="govuk-form-group">
-        <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
-          <h1 class="govuk-fieldset__heading">Choose the prisoner's tier</h1>
-        </legend>
-
-        <div class="govuk-radios" data-module="govuk-radios">
-          <div class="govuk-radios__item">
-            <%= form.radio_button(:tier, 'N/A', checked: @case_info.tier == 'N/A', class: "govuk-radios__input") %>
-            <%= form.label :tier, 'N/A', class: "govuk-label govuk-radios__label" %>
-          </div>
-          <div class="govuk-radios__item">
-            <%= form.radio_button(:tier, 'A', checked: @case_info.tier == 'A', class: "govuk-radios__input") %>
-            <%= form.label :tier, 'A', class: "govuk-label govuk-radios__label" %>
-          </div>
-          <div class="govuk-radios__item">
-            <%= form.radio_button(:tier, 'B', checked: @case_info.tier == 'B', class: "govuk-radios__input") %>
-            <%= form.label :tier, 'B', class: "govuk-label govuk-radios__label" %>
-          </div>
-          <div class="govuk-radios__item">
-            <%= form.radio_button(:tier, 'C', checked: @case_info.tier == 'C', class: "govuk-radios__input") %>
-            <%= form.label :tier, 'C', class: "govuk-label govuk-radios__label" %>
-          </div>
-          <div class="govuk-radios__item">
-            <%= form.radio_button(:tier, 'D', checked: @case_info.tier == 'D', class: "govuk-radios__input") %>
-            <%= form.label :tier, 'D', class: "govuk-label govuk-radios__label" %>
-          </div>
-        </div>
-      </div>
-
-      <div class="govuk-form-group">
-        <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
-          <h1 class="govuk-fieldset__heading">Select the prisoner's Local Divisional Unit (LDU)</h1>
-        </legend>
-        <span class="govuk-hint">
-          Enter the full name of the LDU, for example 'NPS Croydon'
-        </span>
-
-        <div id="search-field" class="govuk-form-group">
-          <div class="govuk-grid-column-one-half">
-            <div class="govuk-grid-row">
-              <%= form.select(:local_divisional_unit_id, LocalDivisionalUnit.all.collect { |ldu| [ldu.name, ldu.id]}, {selected: @prisoner.ldu.try(:name)}, class: "govuk-select") %>
+          <div class="govuk-radios" data-module="govuk-radios">
+            <div class="govuk-radios__item">
+              <%= form.radio_button(:case_allocation, 'NPS', checked: @case_info.case_allocation == 'NPS', class: "govuk-radios__input") %>
+              <%= form.label :case_allocation, 'National Probation Service (NPS)', class: "govuk-label govuk-radios__label" %>
             </div>
-            <div class="govuk-grid-row govuk-!-margin-top-6">
-              <h2 class="govuk-heading-m">The following LDU has been selected:</h2>
+            <div class="govuk-radios__item">
+              <%= form.radio_button(:case_allocation, 'CRC', checked: @case_info.case_allocation == 'CRC', class: "govuk-radios__input") %>
+              <%= form.label :case_allocation, 'Community Rehabilitation Company (CRC)', class: "govuk-label govuk-radios__label" %>
+            </div>
+          </div>
+        </div>
+
+        <div class="govuk-form-group">
+          <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+            <h1 class="govuk-fieldset__heading">Choose the prisoner's tier</h1>
+          </legend>
+
+          <div class="govuk-radios" data-module="govuk-radios">
+            <div class="govuk-radios__item">
+              <%= form.radio_button(:tier, 'A', checked: @case_info.tier == 'A', class: "govuk-radios__input") %>
+              <%= form.label :tier, 'A', class: "govuk-label govuk-radios__label" %>
+            </div>
+            <div class="govuk-radios__item">
+              <%= form.radio_button(:tier, 'B', checked: @case_info.tier == 'B', class: "govuk-radios__input") %>
+              <%= form.label :tier, 'B', class: "govuk-label govuk-radios__label" %>
+            </div>
+            <div class="govuk-radios__item">
+              <%= form.radio_button(:tier, 'C', checked: @case_info.tier == 'C', class: "govuk-radios__input") %>
+              <%= form.label :tier, 'C', class: "govuk-label govuk-radios__label" %>
+            </div>
+            <div class="govuk-radios__item">
+              <%= form.radio_button(:tier, 'D', checked: @case_info.tier == 'D', class: "govuk-radios__input") %>
+              <%= form.label :tier, 'D', class: "govuk-label govuk-radios__label" %>
+            </div>
+          </div>
+        </div>
+
+        <div class="govuk-form-group">
+          <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+            <h1 class="govuk-fieldset__heading">Select the prisoner's Local Divisional Unit (LDU)</h1>
+          </legend>
+          <span class="govuk-hint">
+            Enter the full name of the LDU, for example 'NPS Croydon'
+          </span>
+
+          <div id="search-field" class="govuk-form-group">
+            <div class="govuk-grid-column-one-half">
+              <div class="govuk-grid-row">
+                <%= form.select(:local_divisional_unit_id, LocalDivisionalUnit.all.collect { |ldu| [ldu.name, ldu.id]}, {selected: @prisoner.ldu.try(:name)}, class: "govuk-select") %>
+              </div>
+              <div class="govuk-grid-row govuk-!-margin-top-6">
+                <h2 class="govuk-heading-m">The following LDU has been selected:</h2>
+              </div>
             </div>
           </div>
         </div>
