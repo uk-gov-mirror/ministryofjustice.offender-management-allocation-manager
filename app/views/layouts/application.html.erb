@@ -18,8 +18,9 @@
       <main class='govuk-main-wrapper' id='main-content' role='main'>
 
         <%= render '/shared/breadcrumbs' %>
-
-        <%= yield %>
+        <div class="<%= controller_name %> <%= action_name %>" >
+          <%= yield %>
+        </div>
       </main>
     </div>
 
