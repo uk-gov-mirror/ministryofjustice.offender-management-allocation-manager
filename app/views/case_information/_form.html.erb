@@ -25,15 +25,15 @@
 
               <div class="govuk-radios">
                 <div class="govuk-radios__item">
-                  <%= form.radio_button(:probation_service, 'Scotland', checked: @case_info.probation_service == 'Scotland', class: "govuk-radios__input", data: {behavior: "last-address"} ) %>
+                  <%= form.radio_button(:probation_service, 'Scotland', checked: @case_info.probation_service == 'Scotland', class: "govuk-radios__input", data: {behavior: "last-address"}, onclick: "hide_element()" ) %>
                   <%= form.label :probation_service, 'Scotland', class: "govuk-label govuk-radios__label" %>
                 </div>
                 <div class="govuk-radios__item">
-                  <%= form.radio_button(:probation_service, 'Northern Ireland', checked: @case_info.probation_service == 'Northern Ireland', class: "govuk-radios__input", data: {behavior: "last-address"} ) %>
+                  <%= form.radio_button(:probation_service, 'Northern Ireland', checked: @case_info.probation_service == 'Northern Ireland', class: "govuk-radios__input", data: {behavior: "last-address"}, onclick: "hide_element()" ) %>
                   <%= form.label :probation_service, 'Northern Ireland', class: "govuk-label govuk-radios__label" %>
                 </div>
                 <div class="govuk-radios__item">
-                  <%= form.radio_button(:probation_service, 'Wales', checked: @case_info.probation_service == 'Wales', class: "govuk-radios__input", data: {behavior: "last-address"} ) %>
+                  <%= form.radio_button(:probation_service, 'Wales', checked: @case_info.probation_service == 'Wales', class: "govuk-radios__input", data: {behavior: "last-address"}, onclick: "show_element()" ) %>
                   <%= form.label :probation_service, 'Wales', class: "govuk-label govuk-radios__label" %>
                 </div>
               </div>
@@ -41,7 +41,7 @@
           </div>
 
           <div class="govuk-radios__item">
-            <%= form.radio_button(:last_known_address, 'No', checked: @case_info.last_known_address == 'No', class: "govuk-radios__input", data: {behavior: "last-address"} ) %>
+            <%= form.radio_button(:last_known_address, 'No', checked: @case_info.last_known_address == 'No', class: "govuk-radios__input", data: {behavior: "last-address"}, onclick: "show_element()" ) %>
             <%= form.label :last_known_address, 'No', class: "govuk-label govuk-radios__label" %>
           </div>
         </div>
