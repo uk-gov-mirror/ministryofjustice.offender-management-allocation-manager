@@ -73,11 +73,48 @@ class CaseInformationController < PrisonsApplicationController
       nomis_offender_id: case_information_params[:nomis_offender_id]
     )
     @prisoner = prisoner(case_information_params[:nomis_offender_id])
-    # The only item that can be badly entered is parole_review_date
-    if @case_info.update(case_information_params.merge(manual_entry: true))
+
+    if case_information_params[:last_known_address] == 'Yes' &&
+      (case_information_params[:probation_service] == 'Scotland' ||
+       case_information_params[:probation_service] == 'Northern Ireland')
+      @case_info.update(probation_service: case_information_params[:probation_service],
+                         tier: 'N/A',
+                         welsh_offender: 'No',
+                         case_allocation: 'N/A',
+                         local_divisional_unit_id: nil,
+                         last_known_address: 'Yes',
+                        manual_entry: true)
       redirect_to new_prison_allocation_path(active_prison_id, @case_info.nomis_offender_id)
     else
-      render 'edit_prd'
+      if case_information_params[:last_known_address] == 'No'
+        @case_info.update!(last_known_address: case_information_params[:last_known_address],
+                           probation_service: 'England',
+                           tier: case_information_params[:tier],
+                           welsh_offender: 'No',
+                           case_allocation: case_information_params[:case_allocation],
+                           local_divisional_unit_id: case_information_params[:local_divisional_unit_id],
+                           manual_entry: true)
+
+        redirect_to new_prison_allocation_path(active_prison_id, @case_info.nomis_offender_id)
+      end
+
+      if case_information_params[:last_known_address] == 'Yes' && case_information_params[:probation_service] == 'Wales'
+        @case_info.update(probation_service: 'Wales',
+                          last_known_address: 'Yes',
+                          welsh_offender: 'Yes',
+                          tier: case_information_params[:tier],
+                          case_allocation: case_information_params[:case_allocation],
+                          local_divisional_unit_id: case_information_params[:local_divisional_unit_id],
+                          manual_entry: true)
+        redirect_to new_prison_allocation_path(active_prison_id, @case_info.nomis_offender_id)
+      end
+
+      # The only item that can be badly entered is parole_review_date
+      # if @case_info.update(case_information_params.merge(manual_entry: true))
+      #   redirect_to new_prison_allocation_path(active_prison_id, @case_info.nomis_offender_id)
+      # else
+      #   render 'edit_prd'
+      # end
     end
   end
 
@@ -111,12 +148,19 @@ private
   def scotland_or_ni_address
     return unless ['Scotland', 'Northern Ireland'].include?(case_information_params[:probation_service])
 
+    @case_info.probation_service = case_information_params[:probation_service]
     @case_info.tier = 'N/A'
     @case_info.welsh_offender = 'No'
     @case_info.case_allocation = 'N/A'
+    @case_info.local_divisional_unit = nil
   end
 
   def other_address
+    # setting the welsh_offender will not be needed if we
+    # do a data migration to change all welsh offenders to probation service = Wales
+
+    return if case_information_params[:probation_service] == 'Scotland' || case_information_params[:probation_service] == 'Northern Ireland'
+
     if case_information_params[:last_known_address] == 'No'
       @case_info.probation_service = 'England'
       @case_info.welsh_offender = 'No'
