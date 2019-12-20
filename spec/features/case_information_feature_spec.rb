@@ -9,11 +9,9 @@ feature 'case information feature' do
   end
 
   # This NOMIS id needs to appear on the first page of 'missing information'
-  let(:nomis_offender_id) {
-    nomis_offender_id = 'G2911GD'
-  }
+  let(:nomis_offender_id) { 'G2911GD' }
 
-  context 'creating case information' do
+  context 'when creating case information' do
     context "when the prisoner's last known address is in Scotland or Northern Ireland" do
       it 'complains if the user does not select any radio buttons', :raven_intercept_exception, vcr: { cassette_name: :case_information_missing_all_feature } do
         nomis_offender_id = 'G1821VA' # different nomis offender no
@@ -44,7 +42,6 @@ feature 'case information feature' do
       end
 
       it 'can set case information for a Scottish offender', :raven_intercept_exception, vcr: { cassette_name: :case_information_scottish_feature } do
-
         signin_user
 
         visit prison_summary_pending_path('LEI')
@@ -56,7 +53,6 @@ feature 'case information feature' do
         visit new_prison_case_information_path('LEI', nomis_offender_id)
         choose_scotland
 
-        
         expectations(probation_service: 'Scotland', tier: 'N/A', ldu: nil, case_allocation: 'N/A')
         expect(current_url).to have_content "/prisons/LEI/summary/pending"
 
@@ -64,7 +60,6 @@ feature 'case information feature' do
       end
 
       it 'can set case information for a Northern Irish offender', :raven_intercept_exception, vcr: { cassette_name: :case_information_northern_irish_feature } do
-
         signin_user
 
         visit prison_summary_pending_path('LEI')
@@ -115,7 +110,6 @@ feature 'case information feature' do
 
       it 'adds tiering, service provider and ldu for Welsh prisoner', :raven_intercept_exception,
          vcr: { cassette_name: :case_information_welsh_feature } do
-
         signin_user
         visit prison_summary_pending_path('LEI')
 
@@ -145,7 +139,6 @@ feature 'case information feature' do
 
       it 'complains if service provider has not been selected', :raven_intercept_exception,
          vcr: { cassette_name: :case_information_missing_service_provider_feature } do
-
         signin_user
         visit prison_summary_pending_path('LEI')
 
@@ -171,7 +164,6 @@ feature 'case information feature' do
 
       it 'complains if tier has not been selected', :raven_intercept_exception,
          vcr: { cassette_name: :case_information_missing_tier_feature } do
-
         signin_user
         visit prison_summary_pending_path('LEI')
 
@@ -197,7 +189,6 @@ feature 'case information feature' do
 
       it 'complains if ldu has not been selected', :raven_intercept_exception,
          vcr: { cassette_name: :case_information_missing_ldu_feature } do
-
         signin_user
         visit prison_summary_pending_path('LEI')
 
@@ -223,12 +214,10 @@ feature 'case information feature' do
     end
   end
 
-  context 'editing case information' do
-
+  context 'when editing case information' do
     it 'hides tier/ldu and service provider if last_known address is Scotland or Northern Ireland',
        :raven_intercept_exception,
        vcr: { cassette_name: :case_information_hide_additional_edit_fields_feature }, js: true do
-
       signin_user
       visit new_prison_case_information_path('LEI', nomis_offender_id)
       choose_scotland
@@ -241,8 +230,7 @@ feature 'case information feature' do
 
     it 'shows tier/ldu and service provider if last known address is No (England) or Wales',
        :raven_intercept_exception,
-       vcr: { cassette_name: :case_information_show_additional_edit_fields_feature }, js:true do
-
+       vcr: { cassette_name: :case_information_show_additional_edit_fields_feature }, js: true do
       signin_user
       visit new_prison_case_information_path('LEI', nomis_offender_id)
 
@@ -254,10 +242,9 @@ feature 'case information feature' do
       expect(page).to have_css("div.optional-case-info")
     end
 
-    context 'update a prisoners case information' do
+    context 'when updating a prisoners case information' do
       it 'from last known address in Scotland to Wales', :raven_intercept_exception,
          vcr: { cassette_name: :case_information_updating_from_scotland_to_wales_feature }, js: true do
-
         signin_user
         visit new_prison_case_information_path('LEI', nomis_offender_id)
 
@@ -279,8 +266,7 @@ feature 'case information feature' do
       end
 
       it 'from last known address in Northern Ireland to England', :raven_intercept_exception,
-          vcr: { cassette_name: :case_information_updating_from_ni_to_england }, js: true do
-
+         vcr: { cassette_name: :case_information_updating_from_ni_to_england }, js: true do
         signin_user
         visit new_prison_case_information_path('LEI', nomis_offender_id)
 
@@ -302,8 +288,7 @@ feature 'case information feature' do
       end
 
       it 'from last known address in England to Scotland', :raven_intercept_exception,
-          vcr: { cassette_name: :case_information_updating_from_scotland_to_wales }, js: true do
-
+         vcr: { cassette_name: :case_information_updating_from_scotland_to_wales }, js: true do
         signin_user
         visit new_prison_case_information_path('LEI', nomis_offender_id)
 
@@ -323,7 +308,6 @@ feature 'case information feature' do
 
       it 'from last known address in Northern Ireland to Wales', :raven_intercept_exception,
          vcr: { cassette_name: :case_information_updating_from_ni_to_wales } do
-
         signin_user
         visit new_prison_case_information_path('LEI', nomis_offender_id)
 
@@ -345,8 +329,7 @@ feature 'case information feature' do
       end
 
       it 'from last known address in Wales to England', :raven_intercept_exception,
-          vcr: { cassette_name: :case_information_updating_from_wales_to_england } do
-
+         vcr: { cassette_name: :case_information_updating_from_wales_to_england } do
         signin_user
         visit new_prison_case_information_path('LEI', nomis_offender_id)
         choose_wales(case_alloc: 'case_information_case_allocation_nps', tier: 'case_information_tier_b', ldu_option: 'Welsh LDU')
@@ -401,9 +384,9 @@ feature 'case information feature' do
   end
 
   def expectations(probation_service:, tier:, ldu:, case_allocation:)
-    expect(CaseInformation.first.probation_service).to eq(probation_service)      
+    expect(CaseInformation.first.probation_service).to eq(probation_service)
     expect(CaseInformation.first.tier).to eq(tier)
-    if ldu == nil
+    if ldu.nil?
       expect(CaseInformation.first.local_divisional_unit).to eq(nil)
     else
       expect(CaseInformation.first.local_divisional_unit.name).to eq(ldu)
@@ -426,7 +409,7 @@ feature 'case information feature' do
   end
 
   xit 'allows editing case information for a prisoner', :raven_intercept_exception, vcr: { cassette_name: :case_information_editing_feature } do
-    nomis_offender_id = 'G1821VA' #different nomis offender no than what is set elsewhere
+    nomis_offender_id = 'G1821VA' # different nomis offender no than what is set elsewhere
 
     signin_user
     visit new_prison_case_information_path('LEI', nomis_offender_id)
@@ -477,7 +460,7 @@ feature 'case information feature' do
     signin_user
 
     # Indeterminate offender
-    nomis_offender_id = 'G0806GQ' #different nomis offender no than what is set elsewhere
+    nomis_offender_id = 'G0806GQ' # different nomis offender no than what is set elsewhere
     visit prison_case_information_path('LEI', nomis_offender_id)
     expect(page).not_to have_css('#edit-prd-link')
 

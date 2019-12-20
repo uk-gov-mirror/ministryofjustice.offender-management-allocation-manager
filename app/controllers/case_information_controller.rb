@@ -62,7 +62,7 @@ class CaseInformationController < PrisonsApplicationController
 
     if @case_info.valid?
       @case_info.save
-      return redirect_to prison_summary_pending_path(active_prison_id, sort: params[:sort], page: params[:page])
+      redirect_to prison_summary_pending_path(active_prison_id, sort: params[:sort], page: params[:page])
     else
       case_info_errors
     end
@@ -74,47 +74,18 @@ class CaseInformationController < PrisonsApplicationController
     )
     @prisoner = prisoner(case_information_params[:nomis_offender_id])
 
-    if case_information_params[:last_known_address] == 'Yes' &&
-      (case_information_params[:probation_service] == 'Scotland' ||
-       case_information_params[:probation_service] == 'Northern Ireland')
-      @case_info.update(probation_service: case_information_params[:probation_service],
-                         tier: 'N/A',
-                         welsh_offender: 'No',
-                         case_allocation: 'N/A',
-                         local_divisional_unit_id: nil,
-                         last_known_address: 'Yes',
-                        manual_entry: true)
-      redirect_to new_prison_allocation_path(active_prison_id, @case_info.nomis_offender_id)
-    else
-      if case_information_params[:last_known_address] == 'No'
-        @case_info.update!(last_known_address: case_information_params[:last_known_address],
-                           probation_service: 'England',
-                           tier: case_information_params[:tier],
-                           welsh_offender: 'No',
-                           case_allocation: case_information_params[:case_allocation],
-                           local_divisional_unit_id: case_information_params[:local_divisional_unit_id],
-                           manual_entry: true)
+    update_scotland_or_ni
+    update_england
+    update_wales
 
+    # The only item that can be badly entered is parole_review_date
+    if parole_update?
+      address = @case_info.probation_service == 'England' ? 'No' : 'Yes'
+      if @case_info.update(case_information_params.merge(manual_entry: true, last_known_address: address))
         redirect_to new_prison_allocation_path(active_prison_id, @case_info.nomis_offender_id)
+      else
+        render 'edit_prd'
       end
-
-      if case_information_params[:last_known_address] == 'Yes' && case_information_params[:probation_service] == 'Wales'
-        @case_info.update(probation_service: 'Wales',
-                          last_known_address: 'Yes',
-                          welsh_offender: 'Yes',
-                          tier: case_information_params[:tier],
-                          case_allocation: case_information_params[:case_allocation],
-                          local_divisional_unit_id: case_information_params[:local_divisional_unit_id],
-                          manual_entry: true)
-        redirect_to new_prison_allocation_path(active_prison_id, @case_info.nomis_offender_id)
-      end
-
-      # The only item that can be badly entered is parole_review_date
-      # if @case_info.update(case_information_params.merge(manual_entry: true))
-      #   redirect_to new_prison_allocation_path(active_prison_id, @case_info.nomis_offender_id)
-      # else
-      #   render 'edit_prd'
-      # end
     end
   end
 
@@ -159,7 +130,8 @@ private
     # setting the welsh_offender will not be needed if we
     # do a data migration to change all welsh offenders to probation service = Wales
 
-    return if case_information_params[:probation_service] == 'Scotland' || case_information_params[:probation_service] == 'Northern Ireland'
+    return if case_information_params[:probation_service] == 'Scotland' ||
+      case_information_params[:probation_service] == 'Northern Ireland'
 
     if case_information_params[:last_known_address] == 'No'
       @case_info.probation_service = 'England'
@@ -205,5 +177,54 @@ private
     return unless params[:form_page] == 'address'
 
     @case_info.errors.clear
+  end
+
+  def parole_update?
+    case_information_params.key?(:parole_review_date_dd)
+  end
+
+  def update_scotland_or_ni
+    return unless case_information_params[:last_known_address] == 'Yes' &&
+    (case_information_params[:probation_service] == 'Scotland' ||
+    case_information_params[:probation_service] == 'Northern Ireland')
+
+    @case_info.update(probation_service: case_information_params[:probation_service],
+                      tier: 'N/A',
+                      welsh_offender: 'No',
+                      case_allocation: 'N/A',
+                      local_divisional_unit_id: nil,
+                      last_known_address: 'Yes',
+                      manual_entry: true)
+
+    redirect_to new_prison_allocation_path(active_prison_id, @case_info.nomis_offender_id)
+  end
+
+  def update_england
+    return unless case_information_params[:last_known_address] == 'No'
+
+    @case_info.update(last_known_address: case_information_params[:last_known_address],
+                      probation_service: 'England',
+                      tier: case_information_params[:tier],
+                      welsh_offender: 'No',
+                      case_allocation: case_information_params[:case_allocation],
+                      local_divisional_unit_id: case_information_params[:local_divisional_unit_id],
+                      manual_entry: true)
+
+    redirect_to new_prison_allocation_path(active_prison_id, @case_info.nomis_offender_id)
+  end
+
+  def update_wales
+    return unless case_information_params[:last_known_address] == 'Yes' &&
+      case_information_params[:probation_service] == 'Wales'
+
+    @case_info.update(probation_service: 'Wales',
+                      last_known_address: 'Yes',
+                      welsh_offender: 'Yes',
+                      tier: case_information_params[:tier],
+                      case_allocation: case_information_params[:case_allocation],
+                      local_divisional_unit_id: case_information_params[:local_divisional_unit_id],
+                      manual_entry: true)
+
+    redirect_to new_prison_allocation_path(active_prison_id, @case_info.nomis_offender_id)
   end
 end
