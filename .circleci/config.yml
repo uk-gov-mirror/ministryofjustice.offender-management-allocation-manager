@@ -170,6 +170,7 @@ jobs:
       - attach_workspace:
           at: ~/repo
       - run: bundle --path vendor/bundle
+      - run: bundle check --path vendor/bundle || bundle install --path vendor/bundle
       - run:
           name: Migrate database
           command: |
@@ -201,7 +202,7 @@ jobs:
           name: Run tests
           command: |
             ./cc-test-reporter before-build
-            VCR=1 bundle exec rspec spec --no-color --format documentation --format RspecJunitFormatter -o screenshots/rspec.xml
+            VCR=1 bundle exec rake
             ./cc-test-reporter after-build --coverage-input-type simplecov --exit-code $?
           environment:
             ALLOCATION_MANAGER_HOST: https://allocation-manager-staging.apps.live-1.cloud-platform.service.justice.gov.uk
@@ -209,10 +210,6 @@ jobs:
             RACK_ENV: test
       - store_test_results:
           path: coverage
-      - store_artifacts:
-          path: screenshots
-      - store_test_results:
-          path: screenshots
       - store_artifacts:
           path: coverage
       - store_artifacts:
