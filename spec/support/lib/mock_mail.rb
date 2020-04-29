@@ -13,7 +13,7 @@ class AttachmentContent
   end
 
   def body
-    file = Rails.root.join('spec', 'fixtures', 'imap', ENV['DELIUS_EMAIL_FOLDER'], @body)
+    file = Rails.root.join('spec', 'fixtures', 'imap', 'delius_import_job', @body)
 
     Body.new File.read(file)
   end
