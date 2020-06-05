@@ -16,6 +16,8 @@ RSpec.describe SummaryController, type: :controller do
   before { stub_sso_data(prison, 'alice') }
 
   context 'with 2 offenders' do
+    let(:today_plus_10) { (Time.zone.today + 10.weeks).to_s }
+
     before do
       offenders = [
         { "bookingId": 754_208, "offenderNo": "G1234GY", "firstName": "BOB", "lastName": "SMITH",
@@ -50,10 +52,10 @@ RSpec.describe SummaryController, type: :controller do
                               "nonDtoReleaseDate": "2012-03-17", "nonDtoReleaseDateType": "ARD", "confirmedReleaseDate": "2012-03-17",
                               "releaseDate": "2012-03-17" }, "dateOfBirth": "1953-04-15", "agencyLocationDesc": "LEEDS (HMP)",
           "internalLocationDesc": "A-4-013", "facialImageId": 1_399_838 },
-        { "bookingId": 754_205, "offenderNo": "G1234VV", "firstName": "Fourth", "lastName": "Offender", "agencyLocationId": prison,
-          "sentenceDetail": { "sentenceExpiryDate": "2014-02-16", "automaticReleaseDate": "2011-01-28",
-                              "licenceExpiryDate": "2014-02-07", "homeDetentionCurfewEligibilityDate": "2011-11-07",
-                              "bookingId": 754_207, "sentenceStartDate": "2019-02-08", "automaticReleaseOverrideDate": "2012-03-17",
+        { "bookingId": 754_205, "offenderNo": "G4234GG", "firstName": "Fourth", "lastName": "Offender", "agencyLocationId": prison,
+          "sentenceDetail": { "sentenceExpiryDate": "2014-02-16", "automaticReleaseDate": today_plus_10,
+                              "licenceExpiryDate": "2014-02-07", "homeDetentionCurfewActualDate": today_plus_10,
+                              "bookingId": 754_207, "sentenceStartDate": "2019-02-08",
                               "nonDtoReleaseDate": "2012-03-17", "nonDtoReleaseDateType": "ARD", "confirmedReleaseDate": "2012-03-17",
                               "releaseDate": "2012-03-17" }, "dateOfBirth": "1953-04-15", "agencyLocationDesc": "LEEDS (HMP)",
           "internalLocationDesc": "A-4-013", "facialImageId": 1_399_838 }
@@ -62,6 +64,19 @@ RSpec.describe SummaryController, type: :controller do
       create(:case_information, nomis_offender_id: 'G4234GG')
 
       stub_offenders_for_prison(prison, offenders, bookings)
+    end
+
+    describe '#handover' do
+      before do
+        stub_movements
+        create(:allocation, nomis_offender_id: 'G4234GG')
+      end
+
+      it 'returns some data' do
+        get :handovers, params: { prison_id: prison }
+        expect(response).to be_successful
+        expect(assigns(:offenders).map(&:offender_no)).to eq(['G4234GG'])
+      end
     end
 
     context 'when user is a POM' do
