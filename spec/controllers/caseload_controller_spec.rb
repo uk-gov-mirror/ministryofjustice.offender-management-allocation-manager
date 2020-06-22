@@ -86,11 +86,18 @@ RSpec.describe CaseloadController, type: :controller do
       end
     end
 
-    it 'returns the caseload' do
+    it 'returns the caseload from index' do
       get :index, params: { prison_id: prison }
       expect(response).to be_successful
 
       expect(assigns(:allocations).map(&:nomis_offender_id)).to match_array(offenders.map { |o| o.fetch(:offenderNo) })
+    end
+
+    it 'returns the caseload from new' do
+      get :new, params: { prison_id: prison }
+      expect(response).to be_successful
+
+      expect(assigns(:new_cases).map(&:nomis_offender_id)).to match_array(offenders.map { |o| o.fetch(:offenderNo) })
     end
   end
 end

@@ -25,6 +25,7 @@ class AllocatedOffender
   # check for changes in the last week where the target value
   # (item[1] in the array) is our staff_id
   def new_case?
+    @allocation.created_at >= 7.days.ago ||
     @allocation.versions.where('created_at >= ?', 7.days.ago).map { |c|
       YAML.load(c.object_changes)
     }.select { |c|
