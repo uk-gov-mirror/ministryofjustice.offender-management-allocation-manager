@@ -30,7 +30,7 @@ RSpec.describe Prison, type: :model do
               'Page-Limit' => '200',
               'Page-Offset' => '0',
             }).
-          to_return(body: offenders.to_json)
+          to_return(body: offenders.to_json, headers: { 'Total-Records' => offenders.count.to_s })
 
         stub_request(:post, "#{ApiHelper::T3}/movements/offenders?latestOnly=true&movementTypes=TAP").
           with(body: offenders.map { |o| o.fetch(:offenderNo) }.to_json).

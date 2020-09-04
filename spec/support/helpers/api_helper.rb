@@ -70,12 +70,6 @@ module ApiHelper
     elite2bookingsapi = "#{T3}/offender-sentences/bookings"
     elite2latestmove = "#{T3}/movements/offenders?latestOnly=true&movementTypes=TAP"
 
-    # Stub the call that will get the total number of records
-    stub_request(:get, elite2listapi).to_return(
-      body: {}.to_json,
-      headers: { 'Total-Records' => offenders.count.to_s }
-    )
-
     # make up a set of booking ids
     booking_ids = 1.upto(offenders.size)
 
@@ -84,7 +78,10 @@ module ApiHelper
       headers: {
         'Page-Limit' => '200',
         'Page-Offset' => '0'
-      }).to_return(body: offenders.zip(booking_ids).map { |o, booking_id| o.except(:sentence).merge('bookingId' => booking_id, 'agencyId' => prison) }.to_json)
+      }).to_return(
+        body: offenders.zip(booking_ids).map { |o, booking_id| o.except(:sentence).merge('bookingId' => booking_id, 'agencyId' => prison) }.to_json,
+        headers: { 'Total-Records' => offenders.count.to_s }
+    )
 
     bookings = booking_ids.zip(offenders).map { |booking_id, offender| { 'bookingId' => booking_id, 'sentenceDetail' => offender.fetch(:sentence) } }
     stub_request(:post, elite2bookingsapi).with(body: booking_ids.to_json).

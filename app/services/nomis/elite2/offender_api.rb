@@ -23,7 +23,7 @@ module Nomis
           data = e2_client.get(
             route, queryparams: queryparams, extra_headers: hdrs
           ) { |_json, response|
-            total_records = response.headers['Total-Records'].to_i
+            total_records = response.headers.fetch('Total-Records').to_i
             total_pages = (total_records / page_size.to_f).ceil
           }
 
