@@ -231,6 +231,46 @@ RSpec.describe SummaryController, type: :controller do
         expect(assigns(:offenders).last.pom_responsibility.case_owner).to eq('Community')
       end
     end
+
+    context 'with POMs' do
+      it 'can sort alphabetically'do
+        # Allocated offenders do have to have their prison_arrival_date even if they don't use it
+        # because we now need it to calculate the totals.
+        stub_request(:post, "#{ApiHelper::T3}/movements/offenders?latestOnly=false&movementTypes=TRN").
+            to_return(body: [].to_json)
+
+        # When viewing allocated, cannot sort by awaiting_allocation_for as it is not available and is
+        # meaningless in this context. We do not want to crash if passed a field that is not searchable
+        # within a specific context.
+        #
+        offenders = [
+            build(:nomis_offender, offenderNo: "C7514GW"),
+            build(:nomis_offender, offenderNo: "A7514GW"),
+            build(:nomis_offender, offenderNo: "D7514GW"),
+            build(:nomis_offender, offenderNo: "B7514GW")
+        ]
+
+        stub_offenders_for_prison(prison, offenders)
+
+        create(:case_information, nomis_offender_id:"C7514GW")
+        create(:allocation, primary_pom_name: "Carsley, Jo", nomis_offender_id:"C7514GW", prison: prison)
+
+        create(:case_information, nomis_offender_id:"A7514GW")
+        create(:allocation, primary_pom_name: "Albright, Sally", nomis_offender_id: "A7514GW", prison: prison)
+
+        create(:case_information, nomis_offender_id:"D7514GW")
+        create(:allocation, primary_pom_name: "Dunlop, Abbey", nomis_offender_id: "D7514GW", prison: prison)
+
+        create(:case_information, nomis_offender_id:"B7514GW")
+        create(:allocation, primary_pom_name: "Brown, Denis", nomis_offender_id: "B7514GW", prison: prison)
+
+
+        get :allocated, params: { prison_id: prison, sort: 'pom name' }
+
+        expect(assigns(:offenders).first.allocated_pom_name).to eq('Albright, Sally')
+        expect(assigns(:offenders).last.allocated_pom_name).to eq('Dunlop, Abbey')
+      end
+    end
   end
 
   describe 'new arrivals feature' do
