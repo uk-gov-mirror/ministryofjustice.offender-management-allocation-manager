@@ -36,7 +36,6 @@ class PrisonOffenderManagerService
     poms_list = get_poms_for(prison_id)
     pom = poms_list.find { |p| p.staff_id == nomis_staff_id.to_i }
     if pom.blank?
-      log_missing_pom(prison_id, nomis_staff_id)
       pom_staff_ids = poms_list.map(&:staff_id)
       raise StandardError, "Failed to find POM ##{nomis_staff_id} at #{prison_id} - list is #{pom_staff_ids}"
     end
@@ -88,9 +87,5 @@ private
         pom.working_pattern = 0.0
         pom.status = 'active'
       end
-  end
-
-  def self.log_missing_pom(caseload, nomis_staff_id)
-    Rails.logger.warn("POM #{nomis_staff_id} does not work at prison #{caseload}")
   end
 end

@@ -6,5 +6,5 @@ if sentry_dsn
     config.sanitize_fields = Rails.application.config.filter_parameters.map(&:to_s)
   end
 else
-  Rails.logger.warn '[WARN] Sentry is not configured (SENTRY_DSN)'
+  Rails.logger.warn '[WARN] Sentry is not configured (SENTRY_DSN)' unless Rails.env.test?
 end
