@@ -13,6 +13,7 @@
 /tmp/*
 !/log/.keep
 !/tmp/.keep
+!/tmp/parallel_runtime_rspec.log
 
 /coverage/*
 
