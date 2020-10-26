@@ -10,10 +10,11 @@
 
 # Ignore all logfiles and tempfiles.
 /log/*
-/tmp/*
+/tmp/cache/*
+/tmp/pids/*
+/tmp/sockets/*
+/tmp/*.txt
 !/log/.keep
-!/tmp/.keep
-!/tmp/parallel_runtime_rspec.log
 
 /coverage/*
 
