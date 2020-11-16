@@ -5,7 +5,7 @@
 # e.g. PomCaseload.new().allocations
 #
 class AllocatedOffender
-  delegate :last_name, :full_name, :earliest_release_date,
+  delegate :last_name, :full_name,
            :sentence_start_date, :tier, to: :@offender
   delegate :updated_at, :nomis_offender_id, :primary_pom_allocated_at, :prison,
            to: :@allocation
@@ -16,6 +16,19 @@ class AllocatedOffender
     @staff_id = staff_id
     @allocation = allocation
     @offender = offender
+  end
+
+  def earliest_release_date
+    # Will convert to '' if nil, allowing sorting as lowest value
+    @offender.earliest_release_date.to_s
+  end
+
+  def formatted_earliest_release_date
+    if @offender.earliest_release_date.nil?
+      'Unknown'
+    else
+      @offender.earliest_release_date.to_s(:moic)
+    end
   end
 
   def latest_movement_date
