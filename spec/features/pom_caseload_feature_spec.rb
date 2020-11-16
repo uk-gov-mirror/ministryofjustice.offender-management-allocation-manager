@@ -39,7 +39,7 @@ feature "view POM's caseload" do
             sentence: attributes_for(:sentence_detail,
                                      automaticReleaseDate: "2031-01-22",
                                      conditionalReleaseDate: "2031-01-24",
-                                     tariffDate: Time.zone.today + booking_id.minutes))
+                                     tariffDate: (nomis_id == 'G6262GI') ? nil : Time.zone.today + booking_id.minutes))
     }
   }
   let(:sorted_offenders) {
@@ -113,7 +113,7 @@ feature "view POM's caseload" do
       page.all('th')[3].find('a').click
 
       bookings_by_release_date = offenders.sort_by { |o| o.fetch(:sentence).fetch(:tariffDate) }
-      [6, 7].each do |row_index|
+      [6..7].each do |row_index|
         within ".offender_row_#{row_index}" do
           offender = offenders.detect { |o| o.fetch(:offenderNo) == bookings_by_release_date[row_index].fetch(:offenderNo) }
           name = "#{offender.fetch(:lastName)}, #{offender.fetch(:firstName)}"

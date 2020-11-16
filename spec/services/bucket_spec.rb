@@ -59,21 +59,4 @@ describe Bucket do
     b.sort_bucket!(:test, :desc)
     expect(b.map(&:last_name)).to eq(['A', 'M', 'Z'])
   end
-
-  it 'can sort dates containing nulls' do
-    b = described_class.new([:earliest_release_date])
-    b << OpenStruct.new(
-      last_name: "A",
-      earliest_release_date: nil
-    )
-    b << OpenStruct.new(
-      last_name: "A",
-      earliest_release_date: Date.new(2000, 1, 1)
-    )
-    b.sort_bucket!(:earliest_release_date)
-    expect(b.map(&:earliest_release_date)).to eq([nil, Date.new(2000, 1, 1)])
-
-    b.sort_bucket!(:earliest_release_date, :desc)
-    expect(b.map(&:earliest_release_date)).to eq([Date.new(2000, 1, 1), nil])
-  end
 end
