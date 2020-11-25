@@ -41,4 +41,11 @@ notifications:
       - POM
       - SPO
     end_date: 2/12/2020
-    text: 'NEW FEATURE: Prison Offender Managers and Heads of Offender Management Delivery will now be able to manually input the Victim Liaison Officer’s name and contact details.  <a href="/whats-new">Read more</a>'
+    text: 'NEW FEATURE: Prison Offender Managers and Heads of Offender Management Delivery will now be able to manually input the Victim Liaison Officer’s name and contact details. <a href="/whats-new">Read more</a>'
+  - id: early-allocation-banner-DD-11-2020
+    start_date: DD/11/2020
+    role:
+      - POM
+      - SPO
+    end_date: DD/12/2020
+    text: 'NEW FEATURE: Early allocation assessment and referral now Available! <a href="/whats-new">Read more</a>'
