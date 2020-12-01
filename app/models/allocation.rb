@@ -38,9 +38,6 @@ class Allocation < ApplicationRecord
     offender_released: OFFENDER_RELEASED
   }
 
-  scope :allocations, lambda { |nomis_offender_ids|
-    where(nomis_offender_id: nomis_offender_ids)
-  }
   scope :active_pom_allocations, lambda { |nomis_staff_id, prison|
     secondaries = where(secondary_pom_nomis_id: nomis_staff_id)
 
@@ -120,12 +117,13 @@ class Allocation < ApplicationRecord
     end
   end
 
-  validates :nomis_offender_id,
-            :nomis_booking_id,
+  validates :nomis_booking_id,
             :allocated_at_tier,
             :event,
             :event_trigger,
             :prison, presence: true
+
+  validates :nomis_offender_id, presence: true, uniqueness: true
 
   def offender_released
     deallocate_offender event: Allocation::DEALLOCATE_RELEASED_OFFENDER, event_trigger: Allocation::OFFENDER_RELEASED

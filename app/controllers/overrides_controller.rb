@@ -27,7 +27,7 @@ private
   end
 
   def redirect_on_success
-    allocation = AllocationService.current_allocation_for(override_params[:nomis_offender_id])
+    allocation = Allocation.find_by(nomis_offender_id: override_params[:nomis_offender_id])
 
     if allocation.present? && allocation.active?
       redirect_to prison_confirm_reallocation_path(

@@ -35,7 +35,7 @@ ActiveRecord::Schema.define(version: 2020_12_15_133824) do
     t.datetime "updated_at", null: false
     t.datetime "primary_pom_allocated_at"
     t.string "recommended_pom_type"
-    t.index ["nomis_offender_id"], name: "index_allocations_on_nomis_offender_id"
+    t.index ["nomis_offender_id"], name: "index_allocations_on_nomis_offender_id", unique: true
     t.index ["primary_pom_nomis_id"], name: "index_allocations_on_primary_pom_nomis_id"
     t.index ["prison"], name: "index_allocations_on_prison"
     t.index ["secondary_pom_nomis_id"], name: "index_allocation_versions_secondary_pom_nomis_id"

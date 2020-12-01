@@ -106,10 +106,6 @@ class AllocationService
     }
   end
 
-  def self.current_allocation_for(nomis_offender_id)
-    Allocation.allocations(nomis_offender_id).last
-  end
-
   def self.current_pom_for(nomis_offender_id, prison_id)
     current_allocation = active_allocations(nomis_offender_id, prison_id)
     nomis_staff_id = current_allocation[nomis_offender_id].primary_pom_nomis_id

@@ -68,6 +68,8 @@ RSpec.describe Allocation, type: :model do
     it { is_expected.to validate_presence_of(:allocated_at_tier) }
     it { is_expected.to validate_presence_of(:event) }
     it { is_expected.to validate_presence_of(:event_trigger) }
+
+    it { is_expected.to validate_uniqueness_of :nomis_offender_id }
   end
 
   context 'with allocations' do
@@ -196,13 +198,13 @@ RSpec.describe Allocation, type: :model do
 
     describe '#active?' do
       it 'return true if an Allocation has been assigned a Primary POM' do
-        alloc = AllocationService.current_allocation_for(nomis_offender_id)
+        alloc = described_class.find_by!(nomis_offender_id: nomis_offender_id)
         expect(alloc.active?).to be(true)
       end
 
       it 'return false if an Allocation has not been assigned a Primary POM' do
         described_class.deallocate_primary_pom(nomis_staff_id, allocation.prison)
-        alloc = AllocationService.current_allocation_for(nomis_offender_id)
+        alloc = described_class.find_by!(nomis_offender_id: nomis_offender_id)
 
         expect(alloc.active?).to be(false)
       end
