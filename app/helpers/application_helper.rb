@@ -53,7 +53,7 @@ module ApplicationHelper
     bool_value ? 'Yes' : 'No'
   end
 
-  def auto_delius_import_enabled?(prison)
+  def auto_delius_import_enabled?(_prison)
     false
   end
 
