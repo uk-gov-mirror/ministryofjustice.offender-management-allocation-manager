@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_15_133824) do
+ActiveRecord::Schema.define(version: 2021_02_03_092319) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -206,6 +206,7 @@ ActiveRecord::Schema.define(version: 2020_12_15_133824) do
     t.string "user_first_name"
     t.string "user_last_name"
     t.string "prison"
+    t.datetime "timestamp"
     t.index ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id"
     t.index ["nomis_offender_id"], name: "index_versions_on_nomis_offender_id"
   end

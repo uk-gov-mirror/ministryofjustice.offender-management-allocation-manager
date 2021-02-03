@@ -13,7 +13,7 @@ module HmppsApi
                   :from_agency, :from_agency_description,
                   :to_agency, :to_agency_description,
                   :from_city, :to_city,
-                  :movement_type, :movement_type_description,
+                  :movement_type,
                   :direction_code, :movement_time,
                   :movement_reason, :comment_text
 
@@ -51,7 +51,6 @@ module HmppsApi
         obj.from_city = payload['fromCity']
         obj.to_city = payload['toCity']
         obj.movement_type = payload.fetch('movementType')
-        obj.movement_type_description = payload['movementTypeDescription']
         obj.direction_code = payload.fetch('directionCode')
         obj.movement_time = payload['movementTime']
         obj.movement_reason = payload['movementReason']

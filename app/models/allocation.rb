@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Allocation < ApplicationRecord
-  has_paper_trail
+  has_paper_trail meta: { timestamp: :event_timestamp }
 
   ALLOCATE_PRIMARY_POM = 0
   REALLOCATE_PRIMARY_POM = 1
@@ -92,6 +92,10 @@ class Allocation < ApplicationRecord
     end
   end
 
+  def event_timestamp
+    @event_timestamp ||= Time.zone.now
+  end
+
   # note: this creates an allocation where the co-working POM is set, but the primary
   # one is not. It should still show up in the 'waiting to allocate' bucket.
   # This appears to be safe as allocations only show up for viewing if they have
@@ -128,11 +132,15 @@ class Allocation < ApplicationRecord
             :prison, presence: true
 
   def offender_released
-    deallocate_offender event: Allocation::DEALLOCATE_RELEASED_OFFENDER, event_trigger: Allocation::OFFENDER_RELEASED
+    if active?
+      deallocate_offender event: Allocation::DEALLOCATE_RELEASED_OFFENDER, event_trigger: Allocation::OFFENDER_RELEASED
+    end
   end
 
   def offender_transferred
-    deallocate_offender event: Allocation::DEALLOCATE_PRIMARY_POM, event_trigger: Allocation::OFFENDER_TRANSFERRED
+    if active?
+      deallocate_offender event: Allocation::DEALLOCATE_PRIMARY_POM, event_trigger: Allocation::OFFENDER_TRANSFERRED
+    end
   end
 
 private
