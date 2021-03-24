@@ -6,22 +6,22 @@
 time left to serve into account.</p>
 
 <table class="govuk-table responsive">
-  <thead class="govuk-table__head">
+  <thead>
   <h2 class="govuk-heading-s">Active <%= recommended_pom_type_label(@prisoner).downcase %> POMs</h2>
-  <tr class="govuk-table__row">
-    <th class="govuk-table__header" scope="col">Name</th>
-    <th class="govuk-table__header" scope="col">Previous<br/>allocation</th>
-    <th class="govuk-table__header" scope="col">Tier A<br/>cases</th>
-    <th class="govuk-table__header" scope="col">Tier B<br/>cases</th>
-    <th class="govuk-table__header" scope="col">Tier C<br/>cases</th>
-    <th class="govuk-table__header" scope="col">Tier D<br/>cases</th>
-    <th class="govuk-table__header" scope="col">No Tier<br/>cases</th>
-    <th class="govuk-table__header" scope="col">Total</th>
-    <th class="govuk-table__header" scope="col">Working<br/>pattern</th>
-    <th class="govuk-table__header" scope="col">Action</th>
+  <tr>
+    <<th scope="col">Name</th>
+    <<th scope="col">Previous<br/>allocation</th>
+    <<th scope="col">Tier A<br/>cases</th>
+    <<th scope="col">Tier B<br/>cases</th>
+    <<th scope="col">Tier C<br/>cases</th>
+    <<th scope="col">Tier D<br/>cases</th>
+    <<th scope="col">No Tier<br/>cases</th>
+    <<th scope="col">Total</th>
+    <<th scope="col">Working<br/>pattern</th>
+    <<th scope="col">Action</th>
   </tr>
   </thead>
-  <tbody class="govuk-table__body">
+  <tbody>
   <% @recommended_poms.each_with_index do |pom, i| %>
     <tr class="govuk-table__row recommended_pom_row_<%= i %>">
       <td aria-label="POM name" class="govuk-table__cell "><%= full_name(pom) %></td>
@@ -58,21 +58,21 @@ time left to serve into account.</p>
     <table class="govuk-table responsive">
       <h2 class="govuk-heading-m">
       </h2>
-      <thead class="govuk-table__head">
-      <tr class="govuk-table__row">
-        <th class="govuk-table__header" scope="col">Name</th>
-        <th class="govuk-table__header" scope="col">Previous<br/>allocation</th>
-        <th class="govuk-table__header" scope="col">Tier A<br/>cases</th>
-        <th class="govuk-table__header" scope="col">Tier B<br/>cases</th>
-        <th class="govuk-table__header" scope="col">Tier C<br/>cases</th>
-        <th class="govuk-table__header" scope="col">Tier D<br/>cases</th>
-        <th class="govuk-table__header" scope="col">No tier<br/>cases</th>
-        <th class="govuk-table__header" scope="col">Total</th>
-        <th class="govuk-table__header" scope="col">Working<br/>pattern</th>
-        <th class="govuk-table__header" scope="col">Action</th>
+      <thead>
+      <tr>
+        <<th scope="col">Name</th>
+        <<th scope="col">Previous<br/>allocation</th>
+        <<th scope="col">Tier A<br/>cases</th>
+        <<th scope="col">Tier B<br/>cases</th>
+        <<th scope="col">Tier C<br/>cases</th>
+        <<th scope="col">Tier D<br/>cases</th>
+        <<th scope="col">No tier<br/>cases</th>
+        <<th scope="col">Total</th>
+        <<th scope="col">Working<br/>pattern</th>
+        <<th scope="col">Action</th>
       </tr>
       </thead>
-      <tbody class="govuk-table__body">
+      <tbody>
       <% @not_recommended_poms.each_with_index do |pom, i| %>
         <tr class="govuk-table__row not_recommended_pom_row_<%= i %>">
           <td aria-label="POM name" class="govuk-table__cell "><%= full_name(pom) %></td>

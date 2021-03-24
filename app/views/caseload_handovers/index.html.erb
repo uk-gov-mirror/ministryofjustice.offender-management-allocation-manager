@@ -13,10 +13,10 @@
 
   <p>All cases for start of handover to the community in the next 30 days</p>
 
-  <table class="govuk-table responsive tablesorter">
-    <thead class="govuk-table__head">
-    <tr class="govuk-table__row">
-      <th class="govuk-table__header" scope="col">
+  <table class="responsive tablesorter">
+    <thead>
+    <tr>
+      <<th scope="col">
         <a href="<%= sort_link('last_name') %>">
           Prisoner
         </a>
@@ -57,7 +57,7 @@
       </th>
     </tr>
     </thead>
-    <tbody class="govuk-table__body">
+    <tbody>
     <% @offenders.each_with_index do |offender, i| %>
       <tr class="govuk-table__row offender_row_<%= i %>">
         <td aria-label="Prisoner name" class="govuk-table__cell ">

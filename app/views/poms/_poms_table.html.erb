@@ -1,19 +1,19 @@
-<table class="govuk-table responsive tablesorter">
-  <thead class="govuk-table__head">
-  <tr class="govuk-table__row">
-    <th class="govuk-table__header" scope="col">POM name</th>
-    <th class="govuk-table__header" scope="col">Tier A<br/>cases</th>
-    <th class="govuk-table__header" scope="col">Tier B<br/>cases</th>
-    <th class="govuk-table__header" scope="col">Tier C<br/>cases</th>
-    <th class="govuk-table__header" scope="col">Tier D<br/>cases</th>
-    <th class="govuk-table__header" scope="col">No tier<br/>cases</th>
-    <th class="govuk-table__header" scope="col">Total</th>
+<table class="responsive tablesorter">
+  <thead>
+  <tr>
+    <<th scope="col">POM name</th>
+    <<th scope="col">Tier A<br/>cases</th>
+    <<th scope="col">Tier B<br/>cases</th>
+    <<th scope="col">Tier C<br/>cases</th>
+    <<th scope="col">Tier D<br/>cases</th>
+    <<th scope="col">No tier<br/>cases</th>
+    <<th scope="col">Total</th>
     <th class="govuk-table__header header-width__8" scope="col">Working<br/>pattern</th>
-    <th class="govuk-table__header" scope="col">Status</th>
+    <<th scope="col">Status</th>
     <th class="govuk-table__header sorter-false" scope="col">Action</th>
   </tr>
   </thead>
-  <tbody class="govuk-table__body">
+  <tbody>
   <% poms.each_with_index do |pom, i| %>
     <tr class="govuk-table__row <%= pom_type %>_pom_row_<%= i %>">
       <td aria-label="POM name" class="govuk-table__cell "><%= full_name(pom) %></td>

@@ -14,28 +14,28 @@
   <%= render partial: 'shared/pagination', locals: {data: @pomtasks } %>
   <br/>
  <table class="govuk-table responsive tablesorter">
-    <thead class="govuk-table__head">
-    <tr class="govuk-table__row">
-      <th class="govuk-table__header" scope="col">
+    <thead>
+    <tr>
+      <<th scope="col">
         <a href="<%= sort_link('offender_name') %>">
           Prisoner name
         </a>
         <%= sort_arrow('offender_name') %>
       </th>
-      <th class="govuk-table__header" scope="col">
+      <<th scope="col">
         <a href="<%= sort_link('action_label') %>">
         Update needed
         </a>
         <%= sort_arrow('action_label') %>
       </th>
-      <th class="govuk-table__header" scope="col">
+      <<th scope="col">
         Action
       </th>
     </tr>
   </thead>
   <tbody>
     <% @pomtasks.each do |pomtask|  %>
-      <tr class="govuk-table__row">
+      <tr>
         <td aria-label="Prisoner name" class="govuk-table__cell ">
           <%= pomtask.offender_name %>
           <br/>

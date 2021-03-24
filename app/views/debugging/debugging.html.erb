@@ -24,9 +24,9 @@
   <% else %>
 
 <div class="govuk-!-margin-top-1" id="prisoner-information">
-  <table class="govuk-table">
-    <tbody class="govuk-table__body">
-    <tr class="govuk-table__row">
+  <table>
+    <tbody>
+    <tr>
       <td class="govuk-table__header" scope="row">Prisoner information</td>
       <td class="govuk-table__cell"></td>
     </tr>
@@ -86,9 +86,9 @@
     </tbody>
   </table>
 
-  <table class="govuk-table">
-    <tbody class="govuk-table__body">
-    <tr class="govuk-table__row">
+  <table>
+    <tbody>
+    <tr>
       <td class="govuk-table__header govuk-!-width-one-half" scope="row">Responsibility & handover information</td>
       <td class="govuk-table__cell govuk-!-width-one-half"></td>
     </tr>
@@ -124,9 +124,9 @@
     </tbody>
   </table>
 
-  <table class="govuk-table" id="sentence-information">
-    <tbody class="govuk-table__body">
-    <tr class="govuk-table__row">
+  <table id="sentence-information">
+    <tbody>
+    <tr>
       <td class="govuk-table__header govuk-!-width-one-half" scope="row">Sentence information</td>
       <td class="govuk-table__cell govuk-!-width-one-half"></td>
     </tr>
@@ -208,9 +208,9 @@
   </table>
 
 <% if @allocation.present? && @allocation.active? %>
-  <table class="govuk-table">
-    <tbody class="govuk-table__body">
-    <tr class="govuk-table__row">
+  <table>
+    <tbody>
+    <tr>
       <td class="govuk-table__header govuk-!-width-one-half" scope="row">Prison allocation</td>
       <td class="govuk-table__cell govuk-!-width-one-half"></td>
     <tr class="govuk-table__row" id="pom-role">
@@ -249,19 +249,19 @@
     <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
 <% end %>
 
-  <table class="govuk-table" id="community_information">
-    <tbody class="govuk-table__body">
-    <tr class="govuk-table__row">
+  <table id="community_information">
+    <tbody>
+    <tr>
       <td class="govuk-table__header govuk-!-width-one-half" scope="row">Community information</td>
       <td class="govuk-table__cell govuk-!-width-one-half"></td>
     </tr>
-    <tr class="govuk-table__row">
+    <tr>
       <td class="govuk-table__cell">Local divisional unit (LDU)</td>
       <td class="govuk-table__cell table_cell__left_align">
         <%= @offender.ldu_name || "Unknown"%>
       </td>
     </tr>
-    <tr class="govuk-table__row">
+    <tr>
       <td class="govuk-table__cell">Local divisional unit (LDU) email address</td>
       <td class="govuk-table__cell table_cell__left_align">
         <% if @offender.ldu_email_address.present? %>
@@ -271,13 +271,13 @@
         <% end %>
       </td>
     </tr>
-    <tr class="govuk-table__row">
+    <tr>
       <td class="govuk-table__cell">Team</td>
       <td class="govuk-table__cell table_cell__left_align">
         <%= @offender.team_name.presence || "Unknown"%>
       </td>
     </tr>
-    <tr class="govuk-table__row">
+    <tr>
       <td class="govuk-table__cell govuk-!-width-one-half">COM</td>
       <td class="govuk-table__cell table_cell__left_align  govuk-!-width-one-half">
         <%= @offender.allocated_com_name.presence || "Unknown" %>
@@ -287,9 +287,9 @@
   </table>
 
 <% unless @movements.blank? %>
-  <table class="govuk-table">
-    <tbody class="govuk-table__body">
-    <tr class="govuk-table__row">
+  <table>
+    <tbody>
+    <tr>
       <td class="govuk-table__header govuk-!-width-one-half" scope="row">Last recorded movement</td>
       <td class="govuk-table__cell govuk-!-width-one-half"></td>
     <tr class="govuk-table__row" id="movement_date">

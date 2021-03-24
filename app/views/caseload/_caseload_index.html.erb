@@ -44,13 +44,13 @@
 
   <%= render partial: 'shared/pagination', locals: {data: @allocations } %>
 
-  <table class="govuk-table responsive tablesorter">
-    <thead class="govuk-table__head">
-      <tr class="govuk-table__row">
+  <table class="responsive tablesorter">
+    <thead>
+      <tr>
         <%= render header_partial %>
       </tr>
     </thead>
-    <tbody class="govuk-table__body">
+    <tbody>
       <%= render collection: @allocations, partial: collection_partial %>
     </tbody>
   </table>

@@ -26,25 +26,25 @@
           :data => @offenders,
         }) %>
 
-  <table class="govuk-table responsive tablesorter">
-    <thead class="govuk-table__head">
-    <tr class="govuk-table__row">
-      <th class="govuk-table__header" scope="col">
+  <table class="responsive tablesorter">
+    <thead>
+    <tr>
+      <<th scope="col">
         <a href="<%= sort_link('last_name') %>">
           Case
         </a>
         <%= sort_arrow('last_name') %>
       </th>
-      <th class="govuk-table__header" scope="col">
+      <<th scope="col">
         <a href="<%= sort_link('awaiting_allocation_for') %>">
           Days waiting for allocation
         </a>
         <%= sort_arrow('awaiting_allocation_for') %>
       </th>
-      <th class="govuk-table__header" scope="col">Action</th>
+      <<th scope="col">Action</th>
     </tr>
     </thead>
-    <tbody class="govuk-table__body">
+    <tbody>
     <% @offenders.each_with_index do |offender, i| %>
       <tr class="govuk-table__row offender_row_<%= i %>">
         <td aria-label="Prisoner full name" class="govuk-table__cell ">

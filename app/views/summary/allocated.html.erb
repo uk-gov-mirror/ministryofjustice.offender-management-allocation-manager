@@ -22,9 +22,9 @@
           }) %>
 
   <table class="govuk-table responsive tablesorter">
-    <thead class="govuk-table__head">
-    <tr class="govuk-table__row">
-      <th class="govuk-table__header" scope="col">
+    <thead>
+    <tr>
+      <<th scope="col">
         <a href="<%= sort_link('last_name') %>">
           Prisoner
         </a>
@@ -36,7 +36,7 @@
         </a>
         <%= sort_arrow('earliest_release_date') %>
       </th>
-      <th class="govuk-table__header" scope="col">POM</th>
+      <<th scope="col">POM</th>
       <th class="govuk-table__header sorter-false" scope="col">
         <a href="<%= sort_link('allocation_date') %>">
           Allocation date
@@ -46,7 +46,7 @@
       <th class="govuk-table__header sorter-false" scope="col">Action</th>
     </tr>
     </thead>
-    <tbody class="govuk-table__body">
+    <tbody>
     <% @offenders.each_with_index do |offender, i| %>
       <tr class="govuk-table__row allocated_offender_row_<%= i %>">
         <td aria-label="Prisoner" class="govuk-table__cell">

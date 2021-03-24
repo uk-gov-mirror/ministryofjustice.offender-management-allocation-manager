@@ -19,18 +19,18 @@
                 :data => @offenders,
             }) %>
 
-  <table class="govuk-table responsive tablesorter govuk-!-margin-top-4">
-    <thead class="govuk-table__head">
-    <tr class="govuk-table__row">
-      <th class="govuk-table__header" scope="col">Prisoner name</th>
+  <table class="responsive tablesorter govuk-!-margin-top-4">
+    <thead>
+    <tr>
+      <<th scope="col">Prisoner name</th>
       <th class="govuk-table__header sorter-false" scope="col">Prisoner number</th>
       <th class="govuk-table__header sorter-false" scope="col">Date of birth</th>
       <th class="govuk-table__header sorter-false" scope="col">Tier</th>
-      <th class="govuk-table__header" scope="col">POM</th>
-      <th class="govuk-table__header" scope="col">Action</th>
+      <<th scope="col">POM</th>
+      <<th scope="col">Action</th>
     </tr>
     </thead>
-    <tbody class="govuk-table__body">
+    <tbody>
     <% @offenders.each_with_index do |offender, i| %>
       <tr class="govuk-table__row allocated_offender_row_<%= i %>">
         <td aria-label="Prisoner name" class="govuk-table__cell"><%= highlight(offender.full_name, @q) %></td>

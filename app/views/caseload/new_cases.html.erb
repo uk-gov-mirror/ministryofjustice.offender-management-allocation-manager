@@ -7,48 +7,48 @@
 <% else %>
   <h2 class="govuk-heading-l">New cases</h2>
 
-  <table class="govuk-table responsive tablesorter">
-    <thead class="govuk-table__head">
-    <tr class="govuk-table__row">
-      <th class="govuk-table__header" scope="col">
+  <table class="responsive tablesorter">
+    <thead>
+    <tr>
+      <<th scope="col">
         <a href="<%= sort_link('last_name') %>">
           Prisoner name
         </a>
         <%= sort_arrow('last_name') %>
       </th>
 
-      <th class="govuk-table__header" scope="col">
+      <<th scope="col">
         <a href="<%= sort_link('cell_location') %>">
           Location
         </a>
         <%= sort_arrow('cell_location') %>
       </th>
 
-      <th class="govuk-table__header" scope="col">
+      <<th scope="col">
         <a href="<%= sort_link('tier') %>">
         Tier
         </a>
         <%= sort_arrow('tier') %>
       </th>
-      <th class="govuk-table__header" scope="col">
+      <<th scope="col">
         <a href="<%= sort_link('sentence_start_date') %>">
           Arrival date
         </a>
         <%= sort_arrow('sentence_start_date') %>
       </th>
-      <th class="govuk-table__header" scope="col">
+      <<th scope="col">
         <a href="<%= sort_link('earliest_release_date') %>">
           Earliest release<br/> date
         </a>
         <%= sort_arrow('earliest_release_date') %>
       </th>
-      <th class="govuk-table__header" scope="col">
+      <<th scope="col">
         <a href="<%= sort_link('primary_pom_allocated_at') %>">
           Allocation<br/>date
         </a>
         <%= sort_arrow('primary_pom_allocated_at') %>
       </th>
-      <th class="govuk-table__header" scope="col">
+      <<th scope="col">
         <a href="<%= sort_link('pom_responsibility') %>">
           Role
         </a>
@@ -56,7 +56,7 @@
       </th>
     </tr>
     </thead>
-    <tbody class="govuk-table__body">
+    <tbody>
     <% @new_cases.each_with_index do |allocation, i| %>
       <tr class="govuk-table__row offender_row_<%= i %>">
         <td aria-label="Prisoner name" class="govuk-table__cell">

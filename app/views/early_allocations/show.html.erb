@@ -11,16 +11,16 @@
 
         <h2 class="govuk-heading-m">Summary</h2>
 
-        <table class="govuk-table">
-          <thead class="govuk-table__head">
-          <tr class="govuk-table__row">
+        <table>
+          <thead>
+          <tr>
             <th id="assessment-date-label" scope="col" class="govuk-table__header app-custom-class">Assessment date</th>
             <th id="outcome-label" scope="col" class="govuk-table__header app-custom-class">Outcome</th>
             <th id="pom-name-label" scope="col" class="govuk-table__header app-custom-class">POM name</th>
           </tr>
           </thead>
-          <tbody class="govuk-table__body">
-          <tr class="govuk-table__row">
+          <tbody>
+          <tr>
             <td id="assessment-date" class="govuk-table__cell"><%= format_date(@early_allocation.assessment_date) %></td>
             <td id="outcome" class="govuk-table__cell"><%= early_allocation_long_outcome(@early_allocation) %></td>
             <td id="pom-name" class="govuk-table__cell"><%= pom_full_name(@early_allocation) %></td>

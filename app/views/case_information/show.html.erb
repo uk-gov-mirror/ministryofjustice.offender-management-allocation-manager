@@ -24,40 +24,40 @@
 </p>
 
 <div class="govuk-!-margin-top-1">
-  <table class="govuk-table">
-    <tbody class="govuk-table__body">
-      <tr class="govuk-table__row">
+  <table>
+    <tbody>
+      <tr>
         <td class="govuk-table__header" scope="row">Prisoner</td>
         <td class="govuk-table__cell"></td>
       </tr>
-      <tr class="govuk-table__row">
+      <tr>
         <td class="govuk-table__cell govuk-!-width-one-half">Name</td>
         <td class="govuk-table__cell table_cell__left_align govuk-!-width-one-half"><%= @prisoner.full_name %></td>
       </tr>
-      <tr class="govuk-table__row">
+      <tr>
         <td class="govuk-table__cell govuk-!-width-one-half">Date of birth</td>
         <td class="govuk-table__cell table_cell__left_align govuk-!-width-one-half"><%= format_date(@prisoner.date_of_birth) %></td>
       </tr>
-      <tr class="govuk-table__row">
+      <tr>
         <td class="govuk-table__cell govuk-!-width-one-half">Prisoner number</td>
         <td class="govuk-table__cell table_cell__left_align govuk-!-width-one-half">
           <%= @prisoner.offender_no %>
           <span class="pull-right"><%= link_to 'View Full Profile', prison_prisoner_path(@prison.code, @prisoner.offender_no) %></span>
         </td>
       </tr>
-      <tr class="govuk-table__row">
+      <tr>
         <td class="govuk-table__cell govuk-!-width-one-half">CRN number</td>
         <td class="govuk-table__cell table_cell__left_align govuk-!-width-one-half" id="offender_crn">
           <%= @prisoner.crn %>
         </td>
       </tr>
-      <tr class="govuk-table__row">
+      <tr>
         <td class="govuk-table__cell govuk-!-width-one-half">Service provider</td>
         <td class="govuk-table__cell table_cell__left_align govuk-!-width-one-half">
           <%= service_provider_label(@prisoner.case_allocation) || 'Not found' %>
         </td>
       </tr>
-      <tr class="govuk-table__row">
+      <tr>
         <td class="govuk-table__cell govuk-!-width-one-half">Tier calculation</td>
         <td class="govuk-table__cell table_cell__left_align govuk-!-width-one-half">
           <%= @prisoner.tier || 'Not found' %>
@@ -66,17 +66,17 @@
     </tbody>
   </table>
   <%= render partial: 'shared/offence_info', locals: {editable_prd: false} %>
-  <table class="govuk-table">
-    <tbody class="govuk-table__body">
-      <tr class="govuk-table__row">
+  <table>
+    <tbody>
+      <tr>
         <td class="govuk-table__header" scope="row">Community information</td>
         <td class="govuk-table__cell"></td>
       </tr>
-      <tr class="govuk-table__row">
+      <tr>
         <td class="govuk-table__cell govuk-!-width-one-half">Local Divisional Unit (LDU)</td>
         <td class="govuk-table__cell table_cell__left_align govuk-!-width-one-half"><%= @prisoner.ldu_name %></td>
       </tr>
-      <tr class="govuk-table__row">
+      <tr>
         <td class="govuk-table__cell govuk-!-width-one-half">Team</td>
         <td class="govuk-table__cell table_cell__left_align govuk-!-width-one-half"><%= @prisoner.team_name %></td>
       </tr>

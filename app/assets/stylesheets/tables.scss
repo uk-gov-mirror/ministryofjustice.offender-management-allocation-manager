@@ -34,3 +34,23 @@
 .pull-right {
   float: right;
 }
+
+table {
+  @extend .govuk-table;
+}
+
+thead {
+  @extend .govuk-table__head;
+}
+
+th {
+  @extend .govuk-table__header;
+}
+
+tbody {
+  @extend .govuk-table__body;
+}
+
+tr {
+  @extend .govuk-table__row;
+}

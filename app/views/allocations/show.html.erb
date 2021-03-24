@@ -8,30 +8,30 @@
 
 <div class="govuk-!-margin-top-1">
   <table class="govuk-table">
-    <tbody class="govuk-table__body">
-    <tr class="govuk-table__row">
+    <tbody>
+    <tr>
       <td class="govuk-table__header" scope="row">Prisoner information</td>
       <td class="govuk-table__cell"></td>
     </tr>
-    <tr class="govuk-table__row">
+    <tr>
       <td class="govuk-table__cell govuk-!-width-one-half">Name</td>
       <td class="govuk-table__cell table_cell__left_align govuk-!-width-one-half"><%= @prisoner.full_name %></td>
     </tr>
-    <tr class="govuk-table__row">
+    <tr>
       <td class="govuk-table__cell">Prisoner number</td>
       <td class="govuk-table__cell table_cell__left_align">
         <%= @prisoner.offender_no %>
         <%= link_to 'View DPS Profile', digital_prison_service_profile_path(@prisoner.offender_no), class: "govuk-link pull-right", target: "_blank" %>
     </tr>
-    <tr class="govuk-table__row">
+    <tr>
       <td class="govuk-table__cell govuk-!-width-one-half">Date of birth</td>
       <td class="govuk-table__cell table_cell__left_align govuk-!-width-one-half"><%= format_date(@prisoner.date_of_birth) %></td>
     </tr>
-    <tr class="govuk-table__row">
+    <tr>
       <td class="govuk-table__cell govuk-!-width-one-half">Category</td>
       <td class="govuk-table__cell table_cell__left_align govuk-!-width-one-half">Cat <%= @prisoner.category_code %></td>
     </tr>
-    <tr class="govuk-table__row">
+    <tr>
       <td class="govuk-table__cell">Tiering calculation</td>
       <td class="govuk-table__cell table_cell__left_align">
         Tier <%= @prisoner.tier %>
@@ -40,7 +40,7 @@
         <% end %>
       </td>
     </tr>
-    <tr class="govuk-table__row">
+    <tr>
       <td class="govuk-table__cell govuk-!-width-one-half">Current responsibility</td>
       <td class="govuk-table__cell table_cell__left_align govuk-!-width-one-half responsibility_change">
         <%= case_owner_label(@prisoner) %>
@@ -49,7 +49,7 @@
         <% end %>
       </td>
     </tr>
-    <tr class="govuk-table__row">
+    <tr>
       <td class="govuk-table__cell">Last known address in Wales</td>
       <td class="govuk-table__cell table_cell__left_align">
         <%= humanized_bool(@prisoner.welsh_offender) %>
@@ -58,7 +58,7 @@
         <% end %>
       </td>
     </tr>
-    <tr class="govuk-table__row">
+    <tr>
       <td class="govuk-table__cell">Service provider</td>
       <td class="govuk-table__cell table_cell__left_align">
         <%= service_provider_label(@prisoner.case_allocation) %>
@@ -73,11 +73,11 @@
   <%= render partial: 'shared/offence_info', locals: { editable_prd: true}  %>
 
   <table class="govuk-table">
-    <tbody class="govuk-table__body">
-    <tr class="govuk-table__row">
+    <tbody>
+    <tr>
       <td class="govuk-table__header govuk-!-width-one-half" scope="row">Prison allocation</td>
       <td class="govuk-table__cell govuk-!-width-one-half"></td>
-    <tr class="govuk-table__row">
+    <tr>
       <td class="govuk-table__cell">POM role</td>
       <td class="govuk-table__cell table_cell__left_align">
         <%= pom_responsibility_label(@prisoner) %>
@@ -97,7 +97,7 @@
         <span class="handover-reason">(<%= @prisoner.handover_reason %>)</span>
       </td>
     </tr>
-    <tr class="govuk-table__row">
+    <tr>
       <td class="govuk-table__cell govuk-!-width-one-half">POM</td>
       <td class="govuk-table__cell table_cell__left_align govuk-!-width-one-half">
         <%= link_to @pom.full_name, prison_pom_path(@prison.code, @pom.staff_id), class: "govuk-link" %>
@@ -116,14 +116,14 @@
         <% end %>
       </td>
     </tr>
-    <tr class="govuk-table__row">
+    <tr>
       <td class="govuk-table__cell">Allocation history</td>
       <td class="govuk-table__cell table_cell__left_align">
         <%= last_event(@allocation) %>
         <%= link_to 'View', prison_allocation_history_path(@prison.code, @prisoner.offender_no), class: "govuk-link pull-right" %>
       </td>
     </tr>
-    <tr class="govuk-table__row">
+    <tr>
       <td class="govuk-table__cell govuk-!-width-one-half">Keyworker</td>
       <td class="govuk-table__cell table_cell__left_align govuk-!-width-one-half">
         <%= @keyworker.full_name %>

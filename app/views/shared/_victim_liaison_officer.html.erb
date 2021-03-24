@@ -1,6 +1,6 @@
-<table class="govuk-table vlo-row-<%= victim_liaison_officer_counter %>">
-  <tbody class="govuk-table__body">
-    <tr class="govuk-table__row">
+<table class="vlo-row-<%= victim_liaison_officer_counter %>">
+  <tbody>
+    <tr>
       <td class="govuk-table__cell govuk-table__header govuk-!-width-one-half" scope="row"><%= t((victim_liaison_officer_counter + 1).ordinalize) %> Contact</td>
       <td class="govuk-table__cell govuk-table__cell govuk-!-width-one-half">
         <span class="pull-right">
@@ -8,7 +8,7 @@
         </span>
       </td>
     </tr>
-    <tr class="govuk-table__row">
+    <tr>
       <td class="govuk-table__cell govuk-!-width-one-half" scope="row">
         Victim Liaison Officer name
       </td>
@@ -19,7 +19,7 @@
         </span>
       </td>
     </tr>
-    <tr class="govuk-table__row">
+    <tr>
       <td class="govuk-table__cell govuk-!-width-one-half" scope="row">Email address</td>
       <td class="govuk-table__cell govuk-!-width-one-half">
         <%= victim_liaison_officer.email %>
