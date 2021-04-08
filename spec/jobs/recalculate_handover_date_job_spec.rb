@@ -96,27 +96,6 @@ RSpec.describe RecalculateHandoverDateJob, type: :job do
       stub_request(:any, start_date_url).to_return(status: status)
       stub_request(:any, handover_date_url).to_return(status: status)
     end
-
-    describe 'HTTP 400: offender has multiple active custodial events' do
-      let(:status) { 400 }
-
-      it 'rescues the error to stop the job going into the retry queue' do
-        expect {
-          described_class.perform_now(offender_no)
-        }.not_to raise_error
-      end
-    end
-
-    describe 'HTTP 409: multiple offenders with the same NOMIS ID exist in nDelius' do
-      let(:nomis_offender) { build(:nomis_offender) }
-      let(:status) { 409 }
-
-      it 'rescues the error to stop the job going into the retry queue' do
-        expect {
-          described_class.perform_now(offender_no)
-        }.not_to raise_error
-      end
-    end
   end
 
   describe 're-calculation' do
