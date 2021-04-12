@@ -1,0 +1,10 @@
+<% description = capture do %>
+  <p>
+    <%= suitable_for_early_allocation.name %> - <%=  format_email(suitable_for_early_allocation.email) %> was sent a reminder that this offender
+    is now suitable for early allocation as the 18 month threshold has been crossed.
+  </p>
+<% end %>
+<%= render 'case_history/email_history',
+           title: 'Early allocation reminder sent',
+           description: description,
+           object: suitable_for_early_allocation %>
