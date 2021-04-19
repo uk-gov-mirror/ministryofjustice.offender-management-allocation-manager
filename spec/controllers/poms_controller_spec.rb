@@ -12,9 +12,9 @@ RSpec.describe PomsController, type: :controller do
 
   before do
     stub_sso_data(prison.code)
-    inactive = create(:pom_detail, :inactive)
-    active = create(:pom_detail, :active)
-    unavailable = create(:pom_detail, :unavailable)
+    inactive = create(:pom_detail, :inactive, prison_code: prison.code)
+    active = create(:pom_detail, :active, prison_code: prison.code)
+    unavailable = create(:pom_detail, :unavailable, prison_code: prison.code)
     stub_poms(prison.code, [
       build(:pom, staffId: inactive.nomis_staff_id),
       build(:pom, staffId: active.nomis_staff_id),
@@ -69,7 +69,7 @@ RSpec.describe PomsController, type: :controller do
         {
           staff_id: pom.staff_id,
           tier_a: pom.tier_a, tier_b: pom.tier_b, tier_c: pom.tier_c, tier_d: pom.tier_d, no_tier: pom.no_tier,
-          total_cases: pom.total_cases
+          total_cases: pom.allocations.count
         }
       end
 

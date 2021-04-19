@@ -8,19 +8,15 @@ class PrisonOffenderManagerService
     poms = HmppsApi::PrisonApi::PrisonOffenderManagerApi.list(prison).
       select { |pom| pom.prison_officer? || pom.probation_officer? }.uniq(&:staff_id)
 
-    pom_details = PomDetail.where(nomis_staff_id: poms.map(&:staff_id))
+    pom_details = PomDetail.where(prison_code: prison, nomis_staff_id: poms.map(&:staff_id))
 
-    poms.each { |pom|
-      detail = get_pom_detail(pom_details, pom.staff_id.to_i)
-      pom.status = detail.status
-      pom.working_pattern = detail.working_pattern
-    }
+    poms.map { |pom| PomWrapper.new(pom, get_pom_detail(pom_details, prison,  pom.staff_id.to_i)) }
   end
 
   def self.get_pom_at(prison_id, nomis_staff_id)
     raise ArgumentError, 'PrisonOffenderManagerService#get_pom_at(nil)' if nomis_staff_id.nil?
 
-    poms_list = get_poms_for(prison_id)
+    poms_list = old_get_poms_for(prison_id)
     pom = poms_list.find { |p| p.staff_id == nomis_staff_id.to_i }
     if pom.blank?
       log_missing_pom(prison_id, nomis_staff_id)
@@ -36,7 +32,7 @@ class PrisonOffenderManagerService
   end
 
   def self.get_pom_names(prison)
-    poms_list = get_poms_for(prison)
+    poms_list = old_get_poms_for(prison)
     poms_list.each_with_object({}) { |p, hsh|
       hsh[p.staff_id] = p.full_name
     }
@@ -68,9 +64,24 @@ class PrisonOffenderManagerService
 
 private
 
-  def self.get_pom_detail(pom_details, nomis_staff_id)
+  def self.old_get_poms_for prison
+    # This API call doesn't do what it says on the tin. It can return duplicate
+    # staff_ids in the situation where someone has more than one role.
+    poms = HmppsApi::PrisonApi::PrisonOffenderManagerApi.list(prison).
+      select { |pom| pom.prison_officer? || pom.probation_officer? }.uniq(&:staff_id)
+
+    pom_details = PomDetail.where(prison_code: prison, nomis_staff_id: poms.map(&:staff_id))
+
+    poms.each { |pom|
+      detail = get_pom_detail(pom_details, prison, pom.staff_id.to_i)
+      pom.status = detail.status
+      pom.working_pattern = detail.working_pattern
+    }
+  end
+
+  def self.get_pom_detail(pom_details, prison_code, nomis_staff_id)
     pom_details.detect { |pd| pd.nomis_staff_id == nomis_staff_id } ||
-      PomDetail.find_or_create_by!(nomis_staff_id: nomis_staff_id) do |pom|
+      PomDetail.find_or_create_by!(prison_code: prison_code, nomis_staff_id: nomis_staff_id) do |pom|
         pom.working_pattern = 0.0
         pom.status = 'active'
       end

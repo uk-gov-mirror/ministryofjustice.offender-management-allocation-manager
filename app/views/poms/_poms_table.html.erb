@@ -20,9 +20,11 @@
       <td aria-label="Status" class="govuk-table__cell"><%= status(pom).capitalize %></td>
       <td aria-label="Case mix by tier" class="govuk-table__cell"><%= case_mix_bar(pom) %></td>
       <% if @prison.womens? %>
-        <td aria-label="High complexity cases" class="govuk-table__cell govuk-table__cell--numeric"><%= pom.high_complexity_count %></td>
+        <td aria-label="High complexity cases" class="govuk-table__cell govuk-table__cell--numeric">
+          <%= @offenders.count { |o| pom.allocations.map(&:nomis_offender_id).include?(o.offender_no) && o.complexity_level == 'high' } %>
+        </td>
       <% end %>
-      <td aria-label="Total cases" class="govuk-table__cell govuk-table__cell--numeric govuk-!-font-weight-bold"><%= pom.total_cases %></td>
+      <td aria-label="Total cases" class="govuk-table__cell govuk-table__cell--numeric govuk-!-font-weight-bold"><%= pom.allocations.count %></td>
     </tr>
   <% end %>
   </tbody>

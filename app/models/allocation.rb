@@ -38,6 +38,14 @@ class Allocation < ApplicationRecord
     offender_released: OFFENDER_RELEASED
   }
 
+  # rubocop:disable Rails/HasManyOrHasOneDependent
+  # rubocop:disable Rails/InverseOf
+  has_one :case_information, primary_key: :nomis_offender_id, foreign_key: :nomis_offender_id
+  # rubocop:enable Rails/InverseOf
+  # rubocop:enable Rails/HasManyOrHasOneDependent
+
+  delegate :tier, to: :case_information
+
   scope :allocations, lambda { |nomis_offender_ids|
     where(nomis_offender_id: nomis_offender_ids)
   }
@@ -137,7 +145,7 @@ class Allocation < ApplicationRecord
 private
 
   def deallocate_offender event:, event_trigger:
-    primary_pom = StaffMember.new prison, primary_pom_nomis_id
+    primary_pom = StaffMember.new Prison.new(prison), primary_pom_nomis_id
     offender = OffenderService.get_offender(nomis_offender_id)
     mail_params = {
         email: primary_pom.email_address,

@@ -10,7 +10,7 @@ feature "edit a POM's details" do
   before do
     create(:case_information, nomis_offender_id: nomis_offender_id)
 
-    create(:pom_detail, nomis_staff_id: fulltime_pom_id, working_pattern: 1)
+    create(:pom_detail, prison_code: 'LEI', nomis_staff_id: fulltime_pom_id, working_pattern: 1)
 
     signin_spo_user
   end
@@ -47,9 +47,7 @@ feature "edit a POM's details" do
   it "makes an inactive POM active", vcr: { cassette_name: 'prison_api/edit_poms_activate_pom_feature' } do
     # This doesn't do what it appears to - the URL is wrong so we're not editing an inactive POM... :-(
     visit "/prisons/LEI/poms#inactive"
-    within('.probation_pom_row_0') do
-      click_link 'Moic Integration-Tests'
-    end
+    click_link 'Moic Integration-Tests'
 
     click_link "Edit profile"
 
