@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-RSpec.describe PomsController, :allocation, type: :controller do
+RSpec.describe PomsController, type: :controller do
   let(:prison) { build(:prison) }
   let(:a_offenders) { build_list(:nomis_offender, 2) }
   let(:b_offenders) { build_list(:nomis_offender, 4) }
@@ -40,9 +42,6 @@ RSpec.describe PomsController, :allocation, type: :controller do
   render_views
 
   context 'with an extra unsentenced offender' do
-    let(:active_staff_id) { PomDetail.where(status: 'active').first!.nomis_staff_id }
-    let(:unavailable_staff_id) { PomDetail.where(status: 'unavailable').first!.nomis_staff_id }
-
     before do
       # This guy doesn't turn up in Prison#offenders, and hence doesn't show up on caseload or stats
       missing_offender = create(:case_information)
@@ -56,12 +55,17 @@ RSpec.describe PomsController, :allocation, type: :controller do
       stub_offenders_for_prison(prison.code, offenders)
     end
 
+    let(:active_staff_id) { PomDetail.where(status: 'active').first!.nomis_staff_id }
+    let(:unavailable_staff_id) { PomDetail.where(status: 'unavailable').first!.nomis_staff_id }
+    let(:inactive_poms) { assigns(:poms).reject { |pom| %w[active unavailable].include? pom.status } }
+    let(:active_poms) { assigns(:poms).select { |pom| %w[active unavailable].include? pom.status } }
+
     it 'does omit the allocation which does not show up in Prison#offenders' do
       get :index, params: { prison_id: prison.code }
       expect(response).to be_successful
 
-      expect(assigns(:inactive_poms).count).to eq(1)
-      active_poms = assigns(:active_poms).map do |pom|
+      expect(inactive_poms.count).to eq(1)
+      active_poms_list = active_poms.map do |pom|
         {
           staff_id: pom.staff_id,
           tier_a: pom.tier_a, tier_b: pom.tier_b, tier_c: pom.tier_c, tier_d: pom.tier_d, no_tier: pom.no_tier,
@@ -69,12 +73,12 @@ RSpec.describe PomsController, :allocation, type: :controller do
         }
       end
 
-      expect(active_poms).to match_array [{ staff_id: active_staff_id,
+      expect(active_poms_list).to match_array [{ staff_id: active_staff_id,
                                            tier_a: 2, tier_b: 4, tier_c: 3, tier_d: 1, no_tier: 5,
                                            total_cases: 15 },
-                                          { staff_id: unavailable_staff_id,
-                                            tier_a: 0, tier_b: 0, tier_c: 0, tier_d: 0, no_tier: 0,
-                                            total_cases: 0 }]
+                                               { staff_id: unavailable_staff_id,
+                                                 tier_a: 0, tier_b: 0, tier_c: 0, tier_d: 0, no_tier: 0,
+                                                 total_cases: 0 }]
     end
 
     it 'shows the caseload on the show action' do
