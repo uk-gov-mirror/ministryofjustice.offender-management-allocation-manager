@@ -6,11 +6,11 @@ FactoryBot.define do
       # remove nils (as it confuses HmppsApi::SentenceDetail) and convert dates to strings (just in case test forgets)
       values_hash = attributes.except(:imprisonmentStatus).reject { |_k, v| v.nil? }.map { |k, v| [k.to_s, v.to_s] }.to_h
       HmppsApi::SentenceDetail.new(values_hash,
-                                   imprisonment_status: attributes.fetch(:imprisonmentStatus),
-                                   recall_flag: attributes.fetch(:recall) )
+                                   attributes.stringify_keys)
     end
 
     imprisonmentStatus { 'SEC90' }
+    indeterminateSentence { false }
     recall { false }
 
     # 1 day after policy start in Wales
@@ -83,7 +83,7 @@ FactoryBot.define do
     end
 
     trait :indeterminate do
-      imprisonmentStatus { 'LIFE' }
+      indeterminateSentence { true }
       tariffDate { Time.zone.today + 1.year}
      end
 
@@ -92,20 +92,16 @@ FactoryBot.define do
     end
 
     trait :determinate do
-      imprisonmentStatus {'SEC90'}
-    end
-
-    trait :indeterminate do
-      imprisonmentStatus {'LIFE'}
+      indeterminateSentence { false }
     end
 
     trait :indeterminate_recall do
-      imprisonmentStatus {'LR_LIFE'}
+      indeterminateSentence { true }
       recall { true }
     end
 
     trait :determinate_recall do
-      imprisonmentStatus {'LR_EPP'}
+      indeterminateSentence { false }
       recall { true }
     end
 

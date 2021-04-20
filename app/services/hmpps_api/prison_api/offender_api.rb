@@ -36,15 +36,15 @@ module HmppsApi
                        end
         offenders = data.map do |payload|
           offender_no = payload.fetch('offenderNo')
+          search_payload = search_data.fetch(offender_no, {})
           HmppsApi::OffenderSummary.new(payload,
-                                        search_data.fetch(offender_no, {}),
+                                        search_payload,
                                         latest_temp_movement: temp_movements[offender_no],
                                         complexity_level: complexities[offender_no]).tap { |offender|
             sentencing = sentence_details[offender.booking_id]
             if sentencing.present?
               offender.sentence = HmppsApi::SentenceDetail.new sentencing,
-                                                               imprisonment_status: payload.fetch('imprisonmentStatus'),
-                                                               recall_flag: search_data.fetch(offender_no, {}).fetch('recall', false)
+                                                               search_payload
             end
           }
         end
@@ -60,20 +60,19 @@ module HmppsApi
         if api_response.nil?
           nil
         else
-          search_data = get_search_payload([offender_no])
+          search_payload = get_search_payload([offender_no]).fetch(offender_no, {})
           temp_movements = HmppsApi::PrisonApi::MovementApi.latest_temp_movement_for([offender_no])
           complexity_level = if api_response.fetch('currentlyInPrison') == 'Y' && PrisonService::womens_prison?(api_response.fetch('latestLocationId'))
                                HmppsApi::ComplexityApi.get_complexity(offender_no)
                              end
           prisoner = HmppsApi::Offender.new api_response,
-                                            search_data.fetch(offender_no, {}),
+                                            search_payload,
                                             latest_temp_movement: temp_movements[offender_no],
                                             complexity_level: complexity_level
           prisoner.tap do |offender|
             sentence_details = get_bulk_sentence_details([offender.booking_id])
             sentence = HmppsApi::SentenceDetail.new sentence_details.fetch(offender.booking_id),
-                                                    imprisonment_status: api_response.fetch('imprisonmentStatus'),
-                                                    recall_flag: search_data.fetch(offender_no, {}).fetch('recall', false)
+                                                    search_payload
 
             offender.sentence = sentence
             add_arrival_dates([offender])

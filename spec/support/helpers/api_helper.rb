@@ -24,6 +24,7 @@ module ApiHelper
         {
           prisonerNumber: offender_no,
           recall: offender.fetch(:recall),
+          indeterminateSentence: offender.fetch(:sentence).fetch(:indeterminateSentence),
           cellLocation: offender.fetch(:internalLocation)
         }
       ].to_json)
@@ -138,6 +139,7 @@ module ApiHelper
                         {
                           prisonerNumber: offender.fetch(:offenderNo),
                           recall: offender.fetch(:recall),
+                          indeterminateSentence: offender.fetch(:sentence).fetch(:indeterminateSentence),
                           cellLocation: offender.fetch(:internalLocation)
                         }
                       }.to_json)

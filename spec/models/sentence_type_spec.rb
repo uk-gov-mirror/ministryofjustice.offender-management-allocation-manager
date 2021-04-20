@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe SentenceType, type: :model do
@@ -6,7 +8,6 @@ RSpec.describe SentenceType, type: :model do
 
     expect(sentence_type.code).to eq('IPP')
     expect(sentence_type.description).to eq('Indeterminate Sent for Public Protection')
-    expect(sentence_type.indeterminate_sentence?).to eq(true)
   end
 
   it 'can handle offenders with no sentence' do
@@ -14,7 +15,12 @@ RSpec.describe SentenceType, type: :model do
 
     expect(sentence_type.code).to eq('UNK_SENT')
     expect(sentence_type.description).to eq('Unknown Sentenced')
-    expect(sentence_type.indeterminate_sentence?).to eq(false)
+  end
+
+  it 'can handle offenders with unknown sentence codes' do
+    sentence_type = described_class.new('STS18')
+
+    expect(sentence_type.description).to eq('Unknown Sentence Type STS18')
   end
 
   it 'knows what a civil sentence is' do
@@ -22,22 +28,9 @@ RSpec.describe SentenceType, type: :model do
     expect(described_class.new('IPP').civil_sentence?).to be false
   end
 
-  it "can determine determinate sentences" do
-    off = described_class.new 'CRIM_CON'
-
-    expect(off.indeterminate_sentence?).to eq false
-  end
-
-  it "can determine indeterminate sentences" do
-    off = described_class.new 'IPP'
-
-    expect(off.indeterminate_sentence?).to eq true
-  end
-
   it "can describe a sentence for an offender" do
     off = described_class.new 'IPP'
-    desc = off.description
 
-    expect(desc).to eq('Indeterminate Sent for Public Protection')
+    expect(off.description).to eq('Indeterminate Sent for Public Protection')
   end
 end
