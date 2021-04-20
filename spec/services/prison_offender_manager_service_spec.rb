@@ -11,18 +11,6 @@ describe PrisonOffenderManagerService do
   }
 
   context 'when using T3 and VCR' do
-    describe '#get_pom_name' do
-      it "can get staff names", vcr: { cassette_name: 'prison_api/pom_service_staff_name' } do
-        expect(described_class.get_pom_name(staff_id)). to eq ["MOIC", "INTEGRATION-TESTS"]
-      end
-    end
-
-    describe '#get_user_name' do
-      it "can get user names", vcr: { cassette_name: 'prison_api/pom_service_user_name' } do
-        expect(described_class.get_user_name('RJONES')).to eq ['Ross', 'Jones']
-      end
-    end
-
     describe '#get_poms_for' do
       subject {
         described_class.get_poms_for('LEI')
